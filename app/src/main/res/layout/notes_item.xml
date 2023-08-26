@@ -26,12 +26,12 @@
             <TextView
                 android:id="@+id/titleFetch"
                 android:padding="5dp"
+                android:textAlignment="textStart"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/prompt"
                 android:textSize="25dp"
                 android:textColor="@color/black"
-                android:gravity="center"
                 android:text="Title" />
             <ImageButton
                 android:id="@+id/imageButton"
