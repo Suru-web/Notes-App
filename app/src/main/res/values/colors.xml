@@ -3,11 +3,16 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="grey">#808080</color>
+    <color name="darkorange">#eb7a53</color>
+    <color name="lightyellow">#f6ecc9</color>
+    <color name="green">#a8d672</color>
+    <color name="orange">#f7d44c</color>
+    <color name="blue">#98b7db</color>
     <array name="card_colors">
-        <color name="darkorange">#eb7a53</color>
-        <color name="lightyellow">#f6ecc9</color>
-        <color name="green">#a8d672</color>
-        <color name="orange">#f7d44c</color>
-        <color name="blue">#98b7db</color>
+        <item>@color/orange</item>
+        <item>@color/blue</item>
+        <item>@color/green</item>
+        <item>@color/darkorange</item>
+        <item>@color/lightyellow</item>
     </array>
 </resources>

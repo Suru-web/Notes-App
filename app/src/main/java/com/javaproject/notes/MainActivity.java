@@ -8,14 +8,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,16 +27,19 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    String colors[] = {"orange","darkorange","green","blue","lightyellow"};
+    Resources resources;
     FloatingActionButton addNote;
     RecyclerView recyclerView;
     DatabaseReference databaseReference;
     MyAdapter myAdapter;
     ArrayList<user_object> list;
     Button allBTN, likedBTN;
+    int[] colors;
+    int randomColorIndex,randomColor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +52,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         window.setStatusBarColor(this.getResources().getColor(R.color.black));
         window.setNavigationBarColor(this.getResources().getColor(R.color.black));
 
+        resources = getResources();
+        colors = resources.getIntArray(R.array.card_colors);
+        randomColorIndex = new Random().nextInt(colors.length);
+        randomColor = colors[randomColorIndex];
+
         addNote = findViewById(R.id.addNoteBtn);
         allBTN = findViewById(R.id.allBtn);
         likedBTN = findViewById(R.id.likedBtn);
@@ -54,12 +65,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(this,2));
         list = new ArrayList<>();
-        myAdapter = new MyAdapter(this,list);
+        myAdapter = new MyAdapter(this,list,colors);
         recyclerView.setAdapter(myAdapter);
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                list.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()){
                     user_object userObject = dataSnapshot.getValue(user_object.class);
                     list.add(userObject);
@@ -69,7 +81,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
 
