@@ -10,6 +10,10 @@ public class user_object {
         this.title = title;
         this.notescontent = notescontent;
     }
+
+    public user_object() {
+
+    }
     public String getId() {
         return id;
     }

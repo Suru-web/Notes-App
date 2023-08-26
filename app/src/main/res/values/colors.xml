@@ -2,6 +2,12 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="orange">#f7d44c</color>
     <color name="grey">#808080</color>
+    <array name="card_colors">
+        <color name="darkorange">#eb7a53</color>
+        <color name="lightyellow">#f6ecc9</color>
+        <color name="green">#a8d672</color>
+        <color name="orange">#f7d44c</color>
+        <color name="blue">#98b7db</color>
+    </array>
 </resources>

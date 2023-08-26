@@ -1,7 +1,11 @@
 package com.javaproject.notes;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.motion.widget.OnSwipe;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,10 +17,22 @@ import android.widget.Button;
 import android.widget.ViewFlipper;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+    String colors[] = {"orange","darkorange","green","blue","lightyellow"};
     FloatingActionButton addNote;
+    RecyclerView recyclerView;
+    DatabaseReference databaseReference;
+    MyAdapter myAdapter;
+    ArrayList<user_object> list;
     Button allBTN, likedBTN;
 
     @Override
@@ -33,6 +49,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         addNote = findViewById(R.id.addNoteBtn);
         allBTN = findViewById(R.id.allBtn);
         likedBTN = findViewById(R.id.likedBtn);
+        recyclerView = findViewById(R.id.notesList);
+        databaseReference = FirebaseDatabase.getInstance().getReference("notes");
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new GridLayoutManager(this,2));
+        list = new ArrayList<>();
+        myAdapter = new MyAdapter(this,list);
+        recyclerView.setAdapter(myAdapter);
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    user_object userObject = dataSnapshot.getValue(user_object.class);
+                    list.add(userObject);
+                }
+                myAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         addNote.setOnClickListener(this);
         allBTN.setOnClickListener(this);

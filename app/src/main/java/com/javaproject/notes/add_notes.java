@@ -36,7 +36,7 @@ public class add_notes extends AppCompatActivity implements View.OnClickListener
         window.setNavigationBarColor(this.getResources().getColor(R.color.black));
 
 
-        databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("notes");
 
 
         notesadd = findViewById(R.id.noteaddedBtn);
@@ -56,7 +56,7 @@ public class add_notes extends AppCompatActivity implements View.OnClickListener
             id = databaseReference.push().getKey();
             String note = notesText.getEditText().getText().toString();
             String title = titleText.getText().toString();
-            user_object user = new user_object(id,note,title);
+            user_object user = new user_object(id,title,note);
             databaseReference.child(id).setValue(user);
             Toast.makeText(this,"Notes added",Toast.LENGTH_SHORT).show();
             finish();
