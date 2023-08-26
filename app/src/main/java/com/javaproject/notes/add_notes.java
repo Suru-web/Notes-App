@@ -3,16 +3,26 @@ package com.javaproject.notes;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 
 public class add_notes extends AppCompatActivity implements View.OnClickListener {
 
     Button notesadd,goback;
+    DatabaseReference databaseReference;
+    TextInputLayout notesText;
+    TextView titleText;
+    String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +36,13 @@ public class add_notes extends AppCompatActivity implements View.OnClickListener
         window.setNavigationBarColor(this.getResources().getColor(R.color.black));
 
 
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+
+
         notesadd = findViewById(R.id.noteaddedBtn);
         goback = findViewById(R.id.backButton);
+        notesText = findViewById(R.id.notesTextInput);
+        titleText = findViewById(R.id.titleTextView);
         goback.setOnClickListener(this);
         notesadd.setOnClickListener(this);
     }
@@ -38,7 +53,13 @@ public class add_notes extends AppCompatActivity implements View.OnClickListener
             finish();
         }
         else if (v.getId()==R.id.noteaddedBtn){
+            id = databaseReference.push().getKey();
+            String note = notesText.getEditText().getText().toString();
+            String title = titleText.getText().toString();
+            user_object user = new user_object(id,note,title);
+            databaseReference.child(id).setValue(user);
             Toast.makeText(this,"Notes added",Toast.LENGTH_SHORT).show();
+            finish();
         }
     }
 }
