@@ -13,6 +13,9 @@
         android:theme="@style/Theme.Notes"
         tools:targetApi="31">
         <activity
+            android:name=".liked_display_activity"
+            android:exported="false" />
+        <activity
             android:name=".add_notes"
             android:exported="false" />
         <activity

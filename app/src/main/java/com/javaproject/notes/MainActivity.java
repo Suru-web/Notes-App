@@ -1,13 +1,17 @@
 package com.javaproject.notes;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.motion.widget.OnSwipe;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ViewFlipper;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -43,17 +47,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Intent intent = new Intent(this, add_notes.class);
             startActivity(intent);
         }
-        else if (v.getId()==R.id.allBtn){
-            allBTN.setBackgroundColor(getResources().getColor(R.color.orange));
-            allBTN.setTextColor(getResources().getColor(R.color.black));
-            likedBTN.setBackgroundColor(getResources().getColor(R.color.black));
-            likedBTN.setTextColor(getResources().getColor(R.color.white));
-        }
         else if (v.getId()==R.id.likedBtn){
             allBTN.setBackgroundColor(getResources().getColor(R.color.black));
             allBTN.setTextColor(getResources().getColor(R.color.white));
             likedBTN.setBackgroundColor(getResources().getColor(R.color.orange));
             likedBTN.setTextColor(getResources().getColor(R.color.black));
+            Intent intent = new Intent(MainActivity.this, liked_display_activity.class);
+            startActivity(intent);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        allBTN.setBackgroundColor(getResources().getColor(R.color.orange));
+        allBTN.setTextColor(getResources().getColor(R.color.black));
+        likedBTN.setBackgroundColor(getResources().getColor(R.color.black));
+        likedBTN.setTextColor(getResources().getColor(R.color.white));
     }
 }
