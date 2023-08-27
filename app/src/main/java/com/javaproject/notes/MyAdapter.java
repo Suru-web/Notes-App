@@ -1,6 +1,7 @@
 package com.javaproject.notes;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +22,7 @@ import java.util.Random;
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> implements View.OnLongClickListener {
 
     Context context;
-    ArrayList<user_object> list;
+    static ArrayList<user_object> list;
     int[] colors;
     int currentColorIndex = 0;
 
@@ -47,6 +48,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
 
         int currentColor = colors[currentColorIndex];
         holder.cardView.setCardBackgroundColor(currentColor);
+
         currentColorIndex = (currentColorIndex + 1) % colors.length;
         holder.likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,6 +97,19 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
             cardView = itemView.findViewById(R.id.cardView);
             likeButton = itemView.findViewById(R.id.likeButton);
             fillanim = AnimationUtils.loadAnimation(itemView.getContext(), R.anim.like_button_anim);
+
+            cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    user_object userObject = list.get(position);
+                    String id = userObject.getId();
+                    Intent intent = new Intent(itemView.getContext(), add_notes.class);
+                    intent.putExtra("id",id);
+                    intent.putExtra("clickedCardView?",1);
+                    itemView.getContext().startActivity(intent);
+                }
+            });
 
         }
 

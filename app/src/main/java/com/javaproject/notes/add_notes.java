@@ -1,7 +1,9 @@
 package com.javaproject.notes;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,8 +14,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 public class add_notes extends AppCompatActivity implements View.OnClickListener {
@@ -36,15 +41,42 @@ public class add_notes extends AppCompatActivity implements View.OnClickListener
         window.setNavigationBarColor(this.getResources().getColor(R.color.black));
 
 
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("notes");
-
-
         notesadd = findViewById(R.id.noteaddedBtn);
         goback = findViewById(R.id.backButton);
         notesText = findViewById(R.id.notesTextInput);
         titleText = findViewById(R.id.titleTextView);
         goback.setOnClickListener(this);
         notesadd.setOnClickListener(this);
+
+
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("notes");
+
+
+        Intent intent = getIntent();
+        String listID = intent.getStringExtra("id");
+        int clickedCard = intent.getIntExtra("clickedCardView?",0);
+        if (clickedCard == 1){
+            DatabaseReference notesref = FirebaseDatabase.getInstance().getReference().child("notes").child(listID);
+            notesref.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                        String title = snapshot.child("title").getValue(String.class);
+                        String content = snapshot.child("notescontent").getValue(String.class);
+
+                        titleText.setText(title);
+                        notesText.getEditText().setText(content);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
+
+
     }
 
     @Override
