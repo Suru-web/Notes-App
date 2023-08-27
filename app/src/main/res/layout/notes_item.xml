@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="175dp"
+    android:layout_width="160dp"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardElevation="8dp"
@@ -21,6 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center_vertical"
+            android:layout_weight="10"
             android:orientation="horizontal">
 
             <TextView
@@ -28,6 +29,7 @@
                 android:padding="5dp"
                 android:textAlignment="textStart"
                 android:layout_width="100dp"
+                android:textStyle="bold"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/prompt"
                 android:textSize="25dp"

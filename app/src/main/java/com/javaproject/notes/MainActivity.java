@@ -44,18 +44,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.setStatusBarColor(this.getResources().getColor(R.color.black));
         window.setNavigationBarColor(this.getResources().getColor(R.color.black));
+        setContentView(R.layout.activity_main);
 
         resources = getResources();
         colors = resources.getIntArray(R.array.card_colors);
-        randomColorIndex = new Random().nextInt(colors.length);
-        randomColor = colors[randomColorIndex];
 
         addNote = findViewById(R.id.addNoteBtn);
         allBTN = findViewById(R.id.allBtn);
@@ -64,6 +62,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         databaseReference = FirebaseDatabase.getInstance().getReference("notes");
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(this,2));
+
+        int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.grid_spacing);
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, spacingInPixels, true));
+
+
         list = new ArrayList<>();
         myAdapter = new MyAdapter(this,list,colors);
         recyclerView.setAdapter(myAdapter);

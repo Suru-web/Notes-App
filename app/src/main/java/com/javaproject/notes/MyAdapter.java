@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -13,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
+public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> implements View.OnLongClickListener {
 
     Context context;
     ArrayList<user_object> list;
@@ -41,14 +42,27 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
 
         int currentColor = colors[currentColorIndex];
-//        holder.itemView.setBackgroundColor(randomColor);
         holder.cardView.setCardBackgroundColor(currentColor);
         currentColorIndex = (currentColorIndex + 1) % colors.length;
+        holder.itemView.setOnLongClickListener(this);
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(context, "Item long pressed!"+ position, Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+
     }
 
     @Override
     public int getItemCount() {
         return list.size();
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        return false;
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -62,7 +76,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             title = itemView.findViewById(R.id.titleFetch);
             cont = itemView.findViewById(R.id.contentFetch);
             cardView = itemView.findViewById(R.id.cardView);
+
         }
+
     }
 
 }

@@ -8,6 +8,7 @@
     <color name="green">#a8d672</color>
     <color name="orange">#f7d44c</color>
     <color name="blue">#98b7db</color>
+    <color name="transparent">#00000000</color>
     <array name="card_colors">
         <item>@color/orange</item>
         <item>@color/blue</item>
