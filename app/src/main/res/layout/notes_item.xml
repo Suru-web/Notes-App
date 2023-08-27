@@ -36,7 +36,7 @@
                 android:textColor="@color/black"
                 android:text="Title" />
             <ImageButton
-                android:id="@+id/imageButton"
+                android:id="@+id/likeButton"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:padding="10dp"

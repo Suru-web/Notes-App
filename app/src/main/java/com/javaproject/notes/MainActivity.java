@@ -14,7 +14,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
@@ -35,11 +38,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     FloatingActionButton addNote;
     RecyclerView recyclerView;
     DatabaseReference databaseReference;
+    ImageButton likeImageBtn;
     MyAdapter myAdapter;
     ArrayList<user_object> list;
     Button allBTN, likedBTN;
     int[] colors;
     int randomColorIndex,randomColor;
+    private Animation fillAnimation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +67,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         databaseReference = FirebaseDatabase.getInstance().getReference("notes");
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(this,2));
+        likeImageBtn = findViewById(R.id.likeButton);
+        fillAnimation = AnimationUtils.loadAnimation(this,R.anim.like_button_anim);
 
         int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.grid_spacing);
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
