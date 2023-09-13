@@ -23,6 +23,7 @@ import android.widget.ViewFlipper;
 
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,13 +39,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     FloatingActionButton addNote;
     RecyclerView recyclerView;
     DatabaseReference databaseReference;
-    ImageButton likeImageBtn;
     MyAdapter myAdapter;
     ArrayList<user_object> list;
     Button allBTN, likedBTN;
     int[] colors;
-    int randomColorIndex,randomColor;
-    private Animation fillAnimation;
+    String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,16 +58,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         resources = getResources();
         colors = resources.getIntArray(R.array.card_colors);
+        userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         addNote = findViewById(R.id.addNoteBtn);
         allBTN = findViewById(R.id.allBtn);
         likedBTN = findViewById(R.id.likedBtn);
         recyclerView = findViewById(R.id.notesList);
-        databaseReference = FirebaseDatabase.getInstance().getReference("notes");
+        databaseReference = FirebaseDatabase.getInstance().getReference("notes").child(userID);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(this,2));
-        likeImageBtn = findViewById(R.id.likeButton);
-        fillAnimation = AnimationUtils.loadAnimation(this,R.anim.like_button_anim);
 
         int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.grid_spacing);
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);

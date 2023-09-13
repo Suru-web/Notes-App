@@ -50,14 +50,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
         holder.cardView.setCardBackgroundColor(currentColor);
 
         currentColorIndex = (currentColorIndex + 1) % colors.length;
-        holder.likeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                holder.likeButton.startAnimation(holder.fillanim);
-                holder.likeButton.setImageResource(R.drawable.red_heart);
-                holder.likeButton.setPaddingRelative(0,0,0,0);
-            }
-        });
         holder.itemView.setOnLongClickListener(this);
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -86,8 +78,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
         public CardView cardView;
         TextView title,cont;
 
-        ImageButton likeButton;
-        Animation fillanim;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -95,8 +85,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
             title = itemView.findViewById(R.id.titleFetch);
             cont = itemView.findViewById(R.id.contentFetch);
             cardView = itemView.findViewById(R.id.cardView);
-            likeButton = itemView.findViewById(R.id.likeButton);
-            fillanim = AnimationUtils.loadAnimation(itemView.getContext(), R.anim.like_button_anim);
 
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override

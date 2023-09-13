@@ -4,16 +4,27 @@ public class user_object {
     String id;
     String title;
     String notescontent;
+    Boolean likedNote;
 
-    public user_object(String id, String title, String notescontent) {
+    public user_object(String id, String title, String notescontent,Boolean likedNote) {
         this.id = id;
         this.title = title;
         this.notescontent = notescontent;
+        this.likedNote = likedNote;
     }
 
     public user_object() {
 
     }
+
+    public Boolean getLikedNote() {
+        return likedNote;
+    }
+
+    public void setLikedNote(Boolean likedNote) {
+        this.likedNote = likedNote;
+    }
+
     public String getId() {
         return id;
     }
