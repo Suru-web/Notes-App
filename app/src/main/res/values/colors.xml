@@ -8,12 +8,15 @@
     <color name="green">#a8d672</color>
     <color name="orange">#f7d44c</color>
     <color name="blue">#98b7db</color>
+    <color name="lightPurp">#DCD6F7</color>
+    <color name="purple">#BA94D1</color>
     <color name="transparent">#00000000</color>
     <array name="card_colors">
         <item>@color/orange</item>
         <item>@color/blue</item>
         <item>@color/green</item>
-        <item>@color/darkorange</item>
         <item>@color/lightyellow</item>
+        <item>@color/lightPurp</item>
+        <item>@color/purple</item>
     </array>
 </resources>

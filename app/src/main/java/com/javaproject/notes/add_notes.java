@@ -7,10 +7,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -67,7 +69,7 @@ public class add_notes extends AppCompatActivity implements View.OnClickListener
 
         if (clickedCard == 1) {
             clicked = true;
-            notesadd.setText("Done");
+            notesadd.setVisibility(View.GONE);
             likeBtn.setVisibility(View.VISIBLE);
             DatabaseReference notesref = FirebaseDatabase.getInstance().getReference().child("notes").child(userID).child(listID);
             notesref.addValueEventListener(new ValueEventListener() {
@@ -155,6 +157,15 @@ public class add_notes extends AppCompatActivity implements View.OnClickListener
                 notesref.setValue(hashMap);
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        content = notesText.getEditText().getText().toString();
+        title = titleText.getText().toString();
+        updateData(title,content,liked,listID);
+        Toast.makeText(add_notes.this,"Note Saved",Toast.LENGTH_SHORT).show();
     }
 
     private void updateData(String title, String content, Boolean liked, String listID) {
