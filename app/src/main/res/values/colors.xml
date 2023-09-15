@@ -4,19 +4,21 @@
     <color name="white">#FFFFFFFF</color>
     <color name="grey">#808080</color>
     <color name="darkorange">#eb7a53</color>
-    <color name="lightyellow">#f6ecc9</color>
     <color name="green">#a8d672</color>
     <color name="orange">#f7d44c</color>
     <color name="blue">#98b7db</color>
     <color name="lightPurp">#DCD6F7</color>
     <color name="purple">#BA94D1</color>
     <color name="transparent">#00000000</color>
+    <color name="lightYellow">#F5F0BB</color>
+    <color name="lightBlue">#CCF2F4</color>
     <array name="card_colors">
         <item>@color/orange</item>
         <item>@color/blue</item>
         <item>@color/green</item>
-        <item>@color/lightyellow</item>
         <item>@color/lightPurp</item>
         <item>@color/purple</item>
+        <item>@color/lightYellow</item>
+        <item>@color/lightBlue</item>
     </array>
 </resources>
