@@ -7,7 +7,7 @@
     app:cardCornerRadius="20dp"
     app:strokeWidth="0dp"
     android:id="@+id/cardView"
-    android:layout_margin="16dp">
+    android:layout_margin="12dp">
 
 
     <LinearLayout
