@@ -1,46 +1,44 @@
-package com.javaproject.notes;
+package com.javaproject.notes.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.javaproject.notes.R;
+import com.javaproject.notes.add_notes;
+import com.javaproject.notes.user_object;
+
 import java.util.ArrayList;
-import java.util.Random;
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> implements View.OnLongClickListener {
-
+public class likedAdapter extends RecyclerView.Adapter<likedAdapter.MyViewHolder> {
     Context context;
     static ArrayList<user_object> list;
     int[] colors;
     int currentColorIndex = 0;
 
-    public MyAdapter(Context context, ArrayList<user_object> list,int[] colors) {
+    public likedAdapter(Context context, ArrayList<user_object> list,int[] colors) {
         this.context = context;
-        this.list = list;
+        likedAdapter.list = list;
         this.colors = colors;
     }
 
     @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public likedAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.notes_item,parent,false);
-        return new MyViewHolder(view);
+        return new likedAdapter.MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull likedAdapter.MyViewHolder holder, int position) {
         user_object userObject = list.get(position);
         holder.title.setText(userObject.getTitle());
         holder.cont.setText(userObject.getNotescontent());
@@ -50,7 +48,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
         holder.cardView.setCardBackgroundColor(currentColor);
 
         currentColorIndex = (currentColorIndex + 1) % colors.length;
-        holder.itemView.setOnLongClickListener(this);
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -64,11 +61,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
     @Override
     public int getItemCount() {
         return list.size();
-    }
-
-    @Override
-    public boolean onLongClick(View v) {
-        return false;
     }
 
 
@@ -102,5 +94,4 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
         }
 
     }
-
 }

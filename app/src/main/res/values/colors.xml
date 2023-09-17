@@ -12,13 +12,20 @@
     <color name="transparent">#00000000</color>
     <color name="lightYellow">#F5F0BB</color>
     <color name="lightBlue">#CCF2F4</color>
+    <color name="vanila_ice">#F2D1D1</color>
+    <color name="gossip_green">#E7FBBE</color>
+    <color name="navajo_white">#FFD6A5</color>
+    <color name="pig_pink">#FDCEDF</color>
     <array name="card_colors">
-        <item>@color/orange</item>
         <item>@color/blue</item>
         <item>@color/green</item>
         <item>@color/lightPurp</item>
         <item>@color/purple</item>
         <item>@color/lightYellow</item>
         <item>@color/lightBlue</item>
+        <item>@color/vanila_ice</item>
+        <item>@color/gossip_green</item>
+        <item>@color/navajo_white</item>
+        <item>@color/pig_pink</item>
     </array>
 </resources>

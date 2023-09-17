@@ -6,7 +6,9 @@ plugins {
 android {
     namespace 'com.javaproject.notes'
     compileSdk 33
-
+    viewBinding {
+        enabled = true
+    }
     defaultConfig {
         applicationId "com.javaproject.notes"
         minSdk 24

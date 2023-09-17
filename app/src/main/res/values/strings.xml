@@ -2,4 +2,5 @@
     <string name="app_name">Notes</string>
     <string name="login_google">Login with Google</string>
     <string name="welcome">Welcome</string>
+    <string name="nothing_here">Nothing Here</string>
 </resources>

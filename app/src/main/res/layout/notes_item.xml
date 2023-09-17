@@ -28,6 +28,7 @@
             <TextView
                 android:id="@+id/titleFetch"
                 android:padding="5dp"
+                android:maxLines="1"
                 android:textAlignment="textStart"
                 android:layout_width="100dp"
                 android:textStyle="bold"
