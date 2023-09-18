@@ -62,6 +62,7 @@ public class LockedNotes extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         binding.notesLockedList.setLayoutManager(linearLayoutManager);
 
+
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
         binding.notesLockedList.setLayoutManager(layoutManager);
         database = FirebaseDatabase.getInstance().getReference("lockedNotes").child(userID);

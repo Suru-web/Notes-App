@@ -140,18 +140,6 @@ public class add_notes extends AppCompatActivity implements View.OnClickListener
         updateData(title,content,liked,listID,notesref);
         Toast.makeText(add_notes.this,"Note Saved",Toast.LENGTH_SHORT).show();
         finish();
-//        if (clickedCard == 1){
-//            content = notesText.getEditText().getText().toString();
-//            title = titleText.getText().toString();
-//            updateData(title,content,liked,listID,notesref);
-//            Toast.makeText(add_notes.this,"Note Saved",Toast.LENGTH_SHORT).show();
-//        }
-//        if (lockedcard == 1){
-//            finish();
-//        }
-//        else {
-//            finish();
-//        }
     }
 
     private void updateData(String title, String content, Boolean liked, String listID, DatabaseReference reference) {

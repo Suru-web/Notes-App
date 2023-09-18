@@ -10,7 +10,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.biometric.BiometricManager;
+import androidx.biometric.BiometricPrompt;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.javaproject.notes.R;
@@ -18,6 +22,7 @@ import com.javaproject.notes.add_notes;
 import com.javaproject.notes.user_object;
 
 import java.util.ArrayList;
+import java.util.concurrent.Executor;
 
 public class lockedAdapter extends RecyclerView.Adapter<lockedAdapter.MyViewHolder> {
     Context context;
@@ -72,6 +77,9 @@ public class lockedAdapter extends RecyclerView.Adapter<lockedAdapter.MyViewHold
         public CardView cardView;
         TextView title,cont;
         ImageView lockimg;
+        BiometricManager biometricManager;
+        Boolean fpsuccess = false;
+        Intent intent;
 
 
         public MyViewHolder(@NonNull View itemView) {
@@ -81,21 +89,71 @@ public class lockedAdapter extends RecyclerView.Adapter<lockedAdapter.MyViewHold
             cont = itemView.findViewById(R.id.contentFetch);
             cardView = itemView.findViewById(R.id.cardView);
             lockimg = itemView.findViewById(R.id.lockImage);
-
+            biometricManager = androidx.biometric.BiometricManager.from(itemView.getContext());
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    fingerprint();
                     int position = getAdapterPosition();
                     user_object userObject = list.get(position);
                     String id = userObject.getId();
-                    Intent intent = new Intent(itemView.getContext(), add_notes.class);
+                    intent = new Intent(itemView.getContext(), add_notes.class);
                     intent.putExtra("id",id);
                     intent.putExtra("clickedCardView?",0);
                     intent.putExtra("lockednote?",1);
-                    itemView.getContext().startActivity(intent);
                 }
             });
 
+        }
+        private void fingerprint(){
+            BiometricManager biometricManager = androidx.biometric.BiometricManager.from(itemView.getContext());
+            switch (biometricManager.canAuthenticate()) {
+
+                // this means we can use biometric sensor
+                case BiometricManager.BIOMETRIC_SUCCESS:
+                    break;
+
+                // this means that the device doesn't have fingerprint sensor
+                case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
+                    Toast.makeText(itemView.getContext(),"This device doesnot have a fingerprint sensor",Toast.LENGTH_SHORT).show();
+                    break;
+
+                // this means that biometric sensor is not available
+                case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
+                    Toast.makeText(itemView.getContext(),"The biometric sensor is currently unavailable",Toast.LENGTH_SHORT).show();
+                    break;
+
+                // this means that the device doesn't contain your fingerprint
+                case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
+                    Toast.makeText(itemView.getContext(),"Your device doesn't have fingerprint saved,please check your security settings",Toast.LENGTH_SHORT).show();
+                    break;
+            }
+            Executor executor = ContextCompat.getMainExecutor(itemView.getContext());
+            // this will give us result of AUTHENTICATION
+            final BiometricPrompt biometricPrompt = new BiometricPrompt((FragmentActivity) itemView.getContext(), executor, new BiometricPrompt.AuthenticationCallback() {
+                @Override
+                public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
+                    super.onAuthenticationError(errorCode, errString);
+                }
+
+                // THIS METHOD IS CALLED WHEN AUTHENTICATION IS SUCCESS
+                @Override
+                public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
+                    super.onAuthenticationSucceeded(result);
+                    itemView.getContext().startActivity(intent);
+                    fpsuccess = true;
+                }
+                @Override
+                public void onAuthenticationFailed() {
+                    super.onAuthenticationFailed();
+                    Toast.makeText(itemView.getContext(),"Fingerprint authentication failed",Toast.LENGTH_SHORT).show();
+                    fpsuccess = false;
+                }
+            });
+            // BIOMETRIC DIALOG
+            final BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder().setTitle("Notes")
+                    .setDescription("Use your fingerprint to Open note ").setNegativeButtonText("Cancel").build();
+            biometricPrompt.authenticate(promptInfo);
         }
 
     }

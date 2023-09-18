@@ -40,6 +40,7 @@ dependencies {
     implementation 'androidx.gridlayout:gridlayout:1.0.0'
     implementation 'com.google.firebase:firebase-auth:22.1.1'
     implementation 'com.wajahatkarim:EasyFlipView:3.0.3'
+    implementation "androidx.biometric:biometric:1.1.0"
     testImplementation 'junit:junit:4.13.2'
     implementation "com.airbnb.android:lottie:3.4.0"
     implementation "com.google.android.gms:play-services-auth:20.7.0"
