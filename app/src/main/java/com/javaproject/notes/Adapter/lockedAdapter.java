@@ -151,8 +151,10 @@ public class lockedAdapter extends RecyclerView.Adapter<lockedAdapter.MyViewHold
                 }
             });
             // BIOMETRIC DIALOG
-            final BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder().setTitle("Notes")
-                    .setDescription("Use your fingerprint to Open note ").setNegativeButtonText("Cancel").build();
+            final BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
+                    .setTitle("Unlock Note ")
+                    .setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_STRONG | BiometricManager.Authenticators.DEVICE_CREDENTIAL)
+                    .build();
             biometricPrompt.authenticate(promptInfo);
         }
 
