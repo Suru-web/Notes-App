@@ -2,16 +2,24 @@ package com.javaproject.notes.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.view.menu.MenuBuilder;
+import androidx.appcompat.view.menu.MenuPopupHelper;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.javaproject.notes.R;
 import com.javaproject.notes.add_notes;
 import com.javaproject.notes.user_object;
@@ -53,11 +61,45 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Toast.makeText(context, "Item long pressed! "+ position, Toast.LENGTH_SHORT).show();
+                PopupMenu popupMenu = new PopupMenu(context,holder.title);
+                popupMenu.getMenuInflater().inflate(R.menu.menu_popup, popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        if (item.getTitle().equals("Delete note")){
+                            deletenote(position);
+                        }
+                        else if (item.getTitle().equals("Lock note")){
+                            lockNote(position);
+                        }
+                        return true;
+                    }
+                });
+                popupMenu.show();
                 return true;
             }
         });
 
+    }
+    private void deletenote(int position){
+        user_object userObject = list.get(position);
+        String id = userObject.getId();
+        String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference deleteRef = FirebaseDatabase.getInstance().getReference("notes").child(userID).child(id);
+        DatabaseReference deleteReflocked = FirebaseDatabase.getInstance().getReference("lockedNotes").child(userID).child(id);
+        notifyItemRemoved(position);
+        deleteRef.removeValue();
+        deleteReflocked.removeValue();
+        list.remove(position);
+        notifyItemRangeChanged(0,getItemCount());
+    }
+    private void lockNote(int position){
+        user_object userObject = list.get(position);
+        String id = userObject.getId();
+        String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference lockNote = FirebaseDatabase.getInstance().getReference("lockedNotes").child(userID).child(id);
+        deletenote(position);
+        lockNote.setValue(userObject);
     }
 
     @Override

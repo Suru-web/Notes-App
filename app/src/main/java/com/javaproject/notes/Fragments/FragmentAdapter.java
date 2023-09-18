@@ -19,6 +19,8 @@ public class FragmentAdapter extends FragmentPagerAdapter {
                 return new AllNotes();
             case 1:
                 return new LikedNotes();
+            case 2:
+                return new LockedNotes();
             default:
                 return new AllNotes();
         }
@@ -26,7 +28,7 @@ public class FragmentAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 2;
+        return 3;
     }
 
     @Nullable
@@ -38,6 +40,9 @@ public class FragmentAdapter extends FragmentPagerAdapter {
         }
         else if (position==1){
             title = "Liked";
+        }
+        else if (position==2){
+            title = "Locked";
         }
         return title;
     }

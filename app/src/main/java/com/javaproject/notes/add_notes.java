@@ -41,7 +41,7 @@ public class add_notes extends AppCompatActivity implements View.OnClickListener
     LottieAnimationView likeBtn;
     String title, content;
     Vibrator vibrator;
-    int clickedCard;
+    int clickedCard,lockedcard;
     Boolean likedNoteSave = false;
 
     @Override
@@ -66,14 +66,94 @@ public class add_notes extends AppCompatActivity implements View.OnClickListener
         Intent intent = getIntent();
         listID = intent.getStringExtra("id");
         clickedCard = intent.getIntExtra("clickedCardView?", 0);
+        lockedcard = intent.getIntExtra("lockednote?",0);
         databaseReference = FirebaseDatabase.getInstance().getReference().child("notes");
         userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        if (clickedCard == 1) {
+
+        if (clickedCard == 1){
+            DatabaseReference notesref = FirebaseDatabase.getInstance().getReference().child("notes").child(userID).child(listID);
+            setDefaultData(notesref);
+        }
+        if (lockedcard == 1){
+            DatabaseReference notesref = FirebaseDatabase.getInstance().getReference().child("lockedNotes").child(userID).child(listID);
+            setDefaultData(notesref);
+            likeBtn.setVisibility(View.GONE);
+            String done = "Done";
+            notesadd.setVisibility(View.VISIBLE);
+            notesadd.setText(done);
+        }
+
+
+        goback.setOnClickListener(this);
+        notesadd.setOnClickListener(this);
+        likeBtn.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        id = databaseReference.push().getKey();
+        if (v.getId() == R.id.backButton) {
+            vibrator.vibrate(1);
+            finish();
+        } else if (v.getId() == R.id.noteaddedBtn) {
+            vibrator.vibrate(1);
+            content = notesText.getEditText().getText().toString();
+            title = titleText.getText().toString();
+            if (clicked) {
+                updateData(title, content, liked, listID);
+                finish();
+            } else {
+                updateData(title, content, liked, id);
+                finish();
+            }
+        } else if (v.getId() == R.id.likeAnimBtn) {
+            vibrator.vibrate(1);
+            HashMap<String, Object> hashMap = new HashMap<>();
+            if (clicked) {
+                if (liked) {
+                    likeBtn.setMinAndMaxProgress(0.5f, 1f);
+                    liked = false;
+                } else {
+                    likeBtn.setMinAndMaxProgress(0f, 0.5f);
+                    liked = true;
+                }
+                likeBtn.playAnimation();
+            }
+
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (clickedCard == 1){
+            content = notesText.getEditText().getText().toString();
+            title = titleText.getText().toString();
+            updateData(title,content,liked,listID);
+            Toast.makeText(add_notes.this,"Note Saved",Toast.LENGTH_SHORT).show();
+        }
+        if (lockedcard == 1){
+            finish();
+        }
+        else {
+            finish();
+        }
+    }
+
+    private void updateData(String title, String content, Boolean liked, String listID) {
+        DatabaseReference notesreference = FirebaseDatabase.getInstance().getReference().child("notes").child(userID).child(listID);
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("id", listID);
+        hashMap.put("title", title);
+        hashMap.put("notescontent", content);
+        hashMap.put("likedNote", liked);
+        notesreference.setValue(hashMap);
+    }
+    private void setDefaultData(DatabaseReference notesref){
             clicked = true;
             notesadd.setVisibility(View.GONE);
             likeBtn.setVisibility(View.VISIBLE);
-            DatabaseReference notesref = FirebaseDatabase.getInstance().getReference().child("notes").child(userID).child(listID);
             notesref.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -109,68 +189,5 @@ public class add_notes extends AppCompatActivity implements View.OnClickListener
 
                 }
             });
-        }
-        goback.setOnClickListener(this);
-        notesadd.setOnClickListener(this);
-        likeBtn.setOnClickListener(this);
-    }
-
-    @Override
-    public void onClick(View v) {
-        id = databaseReference.push().getKey();
-        if (v.getId() == R.id.backButton) {
-            vibrator.vibrate(1);
-            finish();
-        } else if (v.getId() == R.id.noteaddedBtn) {
-            vibrator.vibrate(1);
-            content = notesText.getEditText().getText().toString();
-            title = titleText.getText().toString();
-            System.out.println(clicked);
-            if (clicked) {
-                updateData(title, content, liked, listID);
-                finish();
-            } else {
-                updateData(title, content, liked, id);
-                finish();
-            }
-        } else if (v.getId() == R.id.likeAnimBtn) {
-            vibrator.vibrate(1);
-            HashMap<String, Object> hashMap = new HashMap<>();
-            if (clicked) {
-                if (liked) {
-                    likeBtn.setMinAndMaxProgress(0.5f, 1f);
-                    liked = false;
-                } else {
-                    likeBtn.setMinAndMaxProgress(0f, 0.5f);
-                    liked = true;
-                }
-                likeBtn.playAnimation();
-            }
-
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        if (clickedCard == 1){
-            content = notesText.getEditText().getText().toString();
-            title = titleText.getText().toString();
-            updateData(title,content,liked,listID);
-            Toast.makeText(add_notes.this,"Note Saved",Toast.LENGTH_SHORT).show();
-        }
-        else {
-            finish();
-        }
-    }
-
-    private void updateData(String title, String content, Boolean liked, String listID) {
-        DatabaseReference notesreference = FirebaseDatabase.getInstance().getReference().child("notes").child(userID).child(listID);
-        HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("id", listID);
-        hashMap.put("title", title);
-        hashMap.put("notescontent", content);
-        hashMap.put("likedNote", liked);
-        notesreference.setValue(hashMap);
     }
 }

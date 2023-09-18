@@ -16,6 +16,7 @@
     <color name="gossip_green">#E7FBBE</color>
     <color name="navajo_white">#FFD6A5</color>
     <color name="pig_pink">#FDCEDF</color>
+    <color name="dark_blue">#222831</color>
     <array name="card_colors">
         <item>@color/blue</item>
         <item>@color/green</item>

@@ -1,6 +1,5 @@
 package com.javaproject.notes.Fragments;
 
-import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 
@@ -16,81 +15,82 @@ import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.airbnb.lottie.LottieDrawable;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.javaproject.notes.Adapter.MyAdapter;
+import com.javaproject.notes.Adapter.likedAdapter;
+import com.javaproject.notes.Adapter.lockedAdapter;
 import com.javaproject.notes.R;
-import com.javaproject.notes.add_notes;
-import com.javaproject.notes.databinding.FragmentAllNotesBinding;
+import com.javaproject.notes.databinding.FragmentLockedNotesBinding;
 import com.javaproject.notes.user_object;
 
 import java.util.ArrayList;
 
-public class AllNotes extends Fragment {
+
+public class LockedNotes extends Fragment {
 
 
-
-    public AllNotes() {
+    public LockedNotes() {
         // Required empty public constructor
     }
 
-    FragmentAllNotesBinding binding;
+    FragmentLockedNotesBinding binding;
     ArrayList<user_object> list = new ArrayList<>();
     DatabaseReference database;
     String userID;
     Resources resources;
     LottieAnimationView empty;
-    TextView emptytext;
     int[] colors;
-    FloatingActionButton addnote;
+    Boolean likedNoteExists = true;
+    TextView emptytext;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        binding = FragmentAllNotesBinding.inflate(inflater,container,false);
+        binding = FragmentLockedNotesBinding.inflate(inflater,container,false);
         resources = getResources();
         colors = resources.getIntArray(R.array.card_colors);
-        MyAdapter adapter = new MyAdapter(getContext(),list,colors);
-        binding.notesList.setAdapter(adapter);
         empty = binding.emptyAnim;
-        empty.setVisibility(View.GONE);
         emptytext = binding.emptyTextView;
+        lockedAdapter lockedAdapter = new lockedAdapter(getContext(),list,colors);
+        binding.notesLockedList.setAdapter(lockedAdapter);
 
-        addnote = binding.addNoteBtn;
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        binding.notesList.setLayoutManager(linearLayoutManager);
+        binding.notesLockedList.setLayoutManager(linearLayoutManager);
 
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
-        binding.notesList.setLayoutManager(layoutManager);
-        database = FirebaseDatabase.getInstance().getReference("notes").child(userID);
+        binding.notesLockedList.setLayoutManager(layoutManager);
+        database = FirebaseDatabase.getInstance().getReference("lockedNotes").child(userID);
         database.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 list.clear();
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                likedNoteExists = false;
+                for(DataSnapshot dataSnapshot : snapshot.getChildren()){
                     user_object userObject = dataSnapshot.getValue(user_object.class);
                     list.add(userObject);
                     userObject.setId(dataSnapshot.getKey());
+                    likedNoteExists = true;
                 }
-                if (list.size() == 0){
+                if (likedNoteExists) {
+                    binding.notesLockedList.setVisibility(View.VISIBLE);
+                    empty.setVisibility(View.GONE);
+                    emptytext.setVisibility(View.GONE);
+                    lockedAdapter.notifyDataSetChanged();
+                }
+                else {
+                    binding.notesLockedList.setVisibility(View.GONE);
                     empty.setVisibility(View.VISIBLE);
                     emptytext.setVisibility(View.VISIBLE);
                     empty.setMinAndMaxProgress(0f,1f);
                     empty.setRepeatCount(LottieDrawable.INFINITE);
                     empty.setRepeatMode(LottieDrawable.RESTART);
                     empty.playAnimation();
-                    adapter.notifyDataSetChanged();
-                }
-                else {
-                    empty.setVisibility(View.GONE);
-                    emptytext.setVisibility(View.GONE);
-                    adapter.notifyDataSetChanged();
+                    lockedAdapter.notifyDataSetChanged();
                 }
             }
 
@@ -100,13 +100,6 @@ public class AllNotes extends Fragment {
             }
         });
 
-        addnote.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), add_notes.class);
-                startActivity(intent);
-            }
-        });
 
         return binding.getRoot();
     }

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Fragments.LikedNotes">
+
+    <RelativeLayout
+        android:id="@+id/rellay2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="0dp"
+            android:background="@color/black"
+            tools:context=".NotesFragment">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/notesLockedList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="2"
+                tools:layout_editor_absoluteX="170dp"
+                tools:layout_editor_absoluteY="446dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="50dp"
+            android:layout_marginBottom="100dp"
+            android:id="@+id/emptyAnim"
+            app:lottie_rawRes="@raw/emptybox2"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/nothing_here"
+            android:fontFamily="@font/balsamiq_sans"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:alpha="0.7"
+            android:layout_alignParentBottom="true"
+            android:textAlignment="center"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="100dp"
+            android:id="@+id/emptyTextView"/>
+
+    </RelativeLayout>
+</FrameLayout>

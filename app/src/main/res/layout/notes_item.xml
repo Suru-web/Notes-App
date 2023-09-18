@@ -65,6 +65,13 @@
             android:text="Content"
             android:textColor="@color/black"
             android:textSize="16dp" />
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:src="@drawable/padlock"
+            android:padding="40dp"
+            android:visibility="gone"
+            android:id="@+id/lockImage"/>
 
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
