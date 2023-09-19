@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.javaproject.notes.R;
 import com.javaproject.notes.add_notes;
+import com.javaproject.notes.fingerprint;
 import com.javaproject.notes.user_object;
 
 import java.util.ArrayList;
@@ -93,7 +94,6 @@ public class lockedAdapter extends RecyclerView.Adapter<lockedAdapter.MyViewHold
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    fingerprint();
                     int position = getAdapterPosition();
                     user_object userObject = list.get(position);
                     String id = userObject.getId();
@@ -101,61 +101,11 @@ public class lockedAdapter extends RecyclerView.Adapter<lockedAdapter.MyViewHold
                     intent.putExtra("id",id);
                     intent.putExtra("clickedCardView?",0);
                     intent.putExtra("lockednote?",1);
+                    fingerprint fingerprint = new fingerprint(itemView.getContext(),intent);
+                    fingerprint.fingerprint(itemView.getContext(),intent);
                 }
             });
 
-        }
-        private void fingerprint(){
-            BiometricManager biometricManager = androidx.biometric.BiometricManager.from(itemView.getContext());
-            switch (biometricManager.canAuthenticate()) {
-
-                // this means we can use biometric sensor
-                case BiometricManager.BIOMETRIC_SUCCESS:
-                    break;
-
-                // this means that the device doesn't have fingerprint sensor
-                case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
-                    Toast.makeText(itemView.getContext(),"This device doesnot have a fingerprint sensor",Toast.LENGTH_SHORT).show();
-                    break;
-
-                // this means that biometric sensor is not available
-                case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
-                    Toast.makeText(itemView.getContext(),"The biometric sensor is currently unavailable",Toast.LENGTH_SHORT).show();
-                    break;
-
-                // this means that the device doesn't contain your fingerprint
-                case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
-                    Toast.makeText(itemView.getContext(),"Your device doesn't have fingerprint saved,please check your security settings",Toast.LENGTH_SHORT).show();
-                    break;
-            }
-            Executor executor = ContextCompat.getMainExecutor(itemView.getContext());
-            // this will give us result of AUTHENTICATION
-            final BiometricPrompt biometricPrompt = new BiometricPrompt((FragmentActivity) itemView.getContext(), executor, new BiometricPrompt.AuthenticationCallback() {
-                @Override
-                public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
-                    super.onAuthenticationError(errorCode, errString);
-                }
-
-                // THIS METHOD IS CALLED WHEN AUTHENTICATION IS SUCCESS
-                @Override
-                public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
-                    super.onAuthenticationSucceeded(result);
-                    itemView.getContext().startActivity(intent);
-                    fpsuccess = true;
-                }
-                @Override
-                public void onAuthenticationFailed() {
-                    super.onAuthenticationFailed();
-                    Toast.makeText(itemView.getContext(),"Fingerprint authentication failed",Toast.LENGTH_SHORT).show();
-                    fpsuccess = false;
-                }
-            });
-            // BIOMETRIC DIALOG
-            final BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
-                    .setTitle("Unlock Note ")
-                    .setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_STRONG | BiometricManager.Authenticators.DEVICE_CREDENTIAL)
-                    .build();
-            biometricPrompt.authenticate(promptInfo);
         }
 
     }
