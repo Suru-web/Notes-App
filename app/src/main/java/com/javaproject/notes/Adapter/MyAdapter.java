@@ -1,21 +1,23 @@
 package com.javaproject.notes.Adapter;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.view.Gravity;
+import android.os.Handler;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.view.menu.MenuBuilder;
-import androidx.appcompat.view.menu.MenuPopupHelper;
-import androidx.appcompat.widget.PopupMenu;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -53,6 +55,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
         user_object userObject = list.get(position);
         holder.title.setText(userObject.getTitle());
         holder.cont.setText(userObject.getNotescontent());
+        final boolean[] flipped = {false};
 
 
         int currentColor = colors[currentColorIndex];
@@ -63,26 +66,84 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                PopupMenu popupMenu = new PopupMenu(context,holder.title);
-                popupMenu.getMenuInflater().inflate(R.menu.menu_popup, popupMenu.getMenu());
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                FlipAnimationCardView(holder,currentColor,flipped);
+                Handler handler = new Handler();
+                long delayMillis = 1000;
+                holder.delete.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        if (item.getTitle().equals("Delete note")){
-                            deletenote(position);
-                        }
-                        else if (item.getTitle().equals("Lock note")){
-                            lockNote(position);
-                        }
-                        return true;
+                    public void onClick(View v) {
+                        FlipAnimationCardView(holder,currentColor,flipped);
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                deletenote(position);
+                            }
+                        }, delayMillis);
                     }
                 });
-                popupMenu.show();
+                holder.lock.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        FlipAnimationCardView(holder,currentColor,flipped);
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                lockNote(position);
+                            }
+                        }, delayMillis);
+                    }
+                });
+
                 return true;
             }
+
         });
 
     }
+    public void FlipAnimationCardView(MyViewHolder holder, int currentColor, boolean[] flipped){
+        PropertyValuesHolder scaleX = PropertyValuesHolder.ofFloat(View.SCALE_X, 1f, 0f);
+        PropertyValuesHolder scaleY = PropertyValuesHolder.ofFloat(View.SCALE_Y, 1f, 1f);
+        ObjectAnimator anim1 = ObjectAnimator.ofPropertyValuesHolder(holder.cardView, scaleX, scaleY);
+        anim1.setDuration(400);  // Set the duration in milliseconds
+        anim1.setInterpolator(new DecelerateInterpolator());
+        PropertyValuesHolder reverseScaleX = PropertyValuesHolder.ofFloat(View.SCALE_X, 0f, 1f);
+        PropertyValuesHolder reverseScaleY = PropertyValuesHolder.ofFloat(View.SCALE_Y, 1f, 1f);
+        ObjectAnimator anim2 = ObjectAnimator.ofPropertyValuesHolder(holder.cardView, reverseScaleX, reverseScaleY);
+        anim2.setDuration(400);  // Set the duration in milliseconds
+        anim2.setInterpolator(new AccelerateInterpolator());
+        if (!flipped[0]) {
+            anim1.start();
+            System.out.println("Card 1");
+            anim1.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    holder.front.setVisibility(View.GONE);
+                    holder.back.setVisibility(View.VISIBLE);
+                    holder.delete.setBackgroundColor(currentColor);
+                    holder.lock.setBackgroundColor(currentColor);
+                    anim2.start();
+                    flipped[0] = true;
+                }
+            });
+        }
+        else {
+            anim1.start();
+            System.out.println("Card 2");
+            anim1.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    holder.front.setVisibility(View.VISIBLE);
+                    holder.back.setVisibility(View.GONE);
+                    anim2.start();
+                    flipped[0] = false;
+                }
+            });
+        }
+    }
+
+
     private void deletenote(int position){
         user_object userObject = list.get(position);
         String id = userObject.getId();
@@ -120,6 +181,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
 
         public CardView cardView;
         TextView title,cont;
+        LinearLayout front,back;
+        Button lock,delete;
 
 
         public MyViewHolder(@NonNull View itemView) {
@@ -128,6 +191,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
             title = itemView.findViewById(R.id.titleFetch);
             cont = itemView.findViewById(R.id.contentFetch);
             cardView = itemView.findViewById(R.id.cardView);
+            front = itemView.findViewById(R.id.frontLayout);
+            back = itemView.findViewById(R.id.backLayout);
+            lock = itemView.findViewById(R.id.lockButton);
+            delete = itemView.findViewById(R.id.deleteButton);
 
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
