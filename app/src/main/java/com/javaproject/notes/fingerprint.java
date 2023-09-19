@@ -14,10 +14,10 @@ import androidx.fragment.app.FragmentActivity;
 import java.util.concurrent.Executor;
 
 public class fingerprint {
-    public fingerprint(Context context, Intent intent) {
+    public fingerprint(Context context, Intent intent, Boolean openActivity) {
     }
 
-    public void fingerprint(Context context,Intent intent){
+    public void fingerprint(Context context,Intent intent,Boolean openActivity){
         BiometricManager biometricManager = androidx.biometric.BiometricManager.from(context);
         switch (biometricManager.canAuthenticate()) {
 
@@ -52,7 +52,9 @@ public class fingerprint {
             @Override
             public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
                 super.onAuthenticationSucceeded(result);
-                context.startActivity(intent);
+                if (openActivity){
+                    context.startActivity(intent);
+                }
             }
             @Override
             public void onAuthenticationFailed() {
