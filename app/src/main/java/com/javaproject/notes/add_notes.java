@@ -43,7 +43,7 @@ public class add_notes extends AppCompatActivity implements View.OnClickListener
     String title, content;
     Vibrator vibrator;
     int clickedCard,lockedcard;
-    Boolean likedNoteSave = false;
+    String defTitle,defCont;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,9 +137,14 @@ public class add_notes extends AppCompatActivity implements View.OnClickListener
         super.onBackPressed();
         content = notesText.getEditText().getText().toString();
         title = titleText.getText().toString();
-        updateData(title,content,liked,listID,notesref);
-        Toast.makeText(add_notes.this,"Note Saved",Toast.LENGTH_SHORT).show();
-        finish();
+        if (title.equals(defTitle) && content.equals(defCont)){
+            finish();
+        }
+        else {
+            updateData(title,content,liked,listID,notesref);
+            Toast.makeText(add_notes.this,"Note Saved",Toast.LENGTH_SHORT).show();
+            finish();
+        }
     }
 
     private void updateData(String title, String content, Boolean liked, String listID, DatabaseReference reference) {
@@ -163,6 +168,8 @@ public class add_notes extends AppCompatActivity implements View.OnClickListener
                         liked = snapshot.child("likedNote").getValue(Boolean.class);
                         titleText.setText(title);
                         notesText.getEditText().setText(content);
+                        defCont = content;
+                        defTitle = title;
                     }
                 }
                 @Override

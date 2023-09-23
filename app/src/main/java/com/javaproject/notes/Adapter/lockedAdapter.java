@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
@@ -38,11 +39,12 @@ import com.javaproject.notes.user_object;
 import java.util.ArrayList;
 import java.util.concurrent.Executor;
 
-public class lockedAdapter extends RecyclerView.Adapter<lockedAdapter.MyViewHolder> {
+public class lockedAdapter extends RecyclerView.Adapter<lockedAdapter.MyViewHolder> implements fingerprint.FingerPrintCallBack {
     Context context;
     static ArrayList<user_object> list;
     int[] colors;
     int currentColorIndex = 0;
+    CardView card;
 
     public lockedAdapter(Context context, ArrayList<user_object> list,int[] colors) {
         this.context = context;
@@ -58,38 +60,34 @@ public class lockedAdapter extends RecyclerView.Adapter<lockedAdapter.MyViewHold
     }
 
     @Override
-    public void onBindViewHolder(@NonNull lockedAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull lockedAdapter.MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
         user_object userObject = list.get(position);
         holder.title.setText(userObject.getTitle());
         holder.cont.setVisibility(View.GONE);
         holder.lockimg.setVisibility(View.VISIBLE);
         final boolean[] flipped = {false};
-
-
         int currentColor = colors[currentColorIndex];
         holder.cardView.setCardBackgroundColor(currentColor);
-
         currentColorIndex = (currentColorIndex + 1) % colors.length;
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fingerprint fingerprint = new fingerprint(context);
+                fingerprint.fingerprint(context,"open",position);
+                fingerprint.setfingerprintCallback(lockedAdapter.this);
+            }
+        });
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 FlipAnimationCardView(holder,currentColor,flipped);
                 holder.lock.setText("Unlock");
-                Handler handler = new Handler();
-                long delayMillis = 1000;
                 holder.delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent1 = new Intent(context, MainActivity.class);
-                        fingerprint fingerprint = new fingerprint(context,intent1,false);
-                        fingerprint.fingerprint(context,intent1,false);
-//                        FlipAnimationCardView(holder,currentColor,flipped);
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                deletenote(position);
-                            }
-                        }, delayMillis);
+                        fingerprint fingerprint = new fingerprint(context);
+                        fingerprint.fingerprint(context,"delete",position);
+                        fingerprint.setfingerprintCallback(lockedAdapter.this);
                     }
                 });
                 holder.lock.setOnClickListener(new View.OnClickListener() {
@@ -97,14 +95,9 @@ public class lockedAdapter extends RecyclerView.Adapter<lockedAdapter.MyViewHold
                     public void onClick(View v) {
                         FlipAnimationCardView(holder,currentColor,flipped);
                         Intent intent1 = new Intent(context, MainActivity.class);
-                        fingerprint fingerprint = new fingerprint(context,intent1,false);
-                        fingerprint.fingerprint(context,intent1,false);
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                unlockNote(position);
-                            }
-                        }, delayMillis);
+                        fingerprint fingerprint = new fingerprint(context);
+                        fingerprint.fingerprint(context,"lock",position);
+                        fingerprint.setfingerprintCallback(lockedAdapter.this);
                     }
                 });
                 return true;
@@ -112,6 +105,42 @@ public class lockedAdapter extends RecyclerView.Adapter<lockedAdapter.MyViewHold
         });
 
     }
+
+    @Override
+    public int getItemCount() {
+        return list.size();
+    }
+
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
+
+        public CardView cardView;
+        TextView title,cont;
+        ImageView lockimg;
+        BiometricManager biometricManager;
+        Intent intent;
+        LinearLayout front,back;
+        Button lock,delete;
+
+
+        public MyViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            title = itemView.findViewById(R.id.titleFetch);
+            cont = itemView.findViewById(R.id.contentFetch);
+            cardView = itemView.findViewById(R.id.cardView);
+            lockimg = itemView.findViewById(R.id.lockImage);
+            front = itemView.findViewById(R.id.frontLayout);
+            back = itemView.findViewById(R.id.backLayout);
+            lock = itemView.findViewById(R.id.lockButton);
+            delete = itemView.findViewById(R.id.deleteButton);
+            biometricManager = androidx.biometric.BiometricManager.from(itemView.getContext());
+
+
+        }
+
+    }
+
+
     private void deletenote(int position){
         user_object userObject = list.get(position);
         String id = userObject.getId();
@@ -145,7 +174,6 @@ public class lockedAdapter extends RecyclerView.Adapter<lockedAdapter.MyViewHold
         anim2.setInterpolator(new AccelerateInterpolator());
         if (!flipped[0]) {
             anim1.start();
-            System.out.println("Card 1");
             anim1.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
@@ -161,7 +189,6 @@ public class lockedAdapter extends RecyclerView.Adapter<lockedAdapter.MyViewHold
         }
         else {
             anim1.start();
-            System.out.println("Card 2");
             anim1.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
@@ -176,51 +203,36 @@ public class lockedAdapter extends RecyclerView.Adapter<lockedAdapter.MyViewHold
     }
 
     @Override
-    public int getItemCount() {
-        return list.size();
+    public void onSuccess(String what, int position) {
+        Handler handler = new Handler();
+        long delayMillis = 600;
+        if (what.equals("lock")){
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    unlockNote(position);
+                }
+            }, delayMillis);
+        }
+        else if (what.equals("delete")){
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    deletenote(position);
+                }
+            }, delayMillis);
+        } else if (what.equals("open")) {
+            user_object userObject = list.get(position);
+            String id = userObject.getId();
+            Intent intent = new Intent(context, add_notes.class);
+            intent.putExtra("id",id);
+            intent.putExtra("clickedCardView?",0);
+            intent.putExtra("lockednote?",1);
+            context.startActivity(intent);
+        }
     }
 
-
-
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
-
-        public CardView cardView;
-        TextView title,cont;
-        ImageView lockimg;
-        BiometricManager biometricManager;
-        Intent intent;
-        LinearLayout front,back;
-        Button lock,delete;
-
-
-        public MyViewHolder(@NonNull View itemView) {
-            super(itemView);
-
-            title = itemView.findViewById(R.id.titleFetch);
-            cont = itemView.findViewById(R.id.contentFetch);
-            cardView = itemView.findViewById(R.id.cardView);
-            lockimg = itemView.findViewById(R.id.lockImage);
-            front = itemView.findViewById(R.id.frontLayout);
-            back = itemView.findViewById(R.id.backLayout);
-            lock = itemView.findViewById(R.id.lockButton);
-            delete = itemView.findViewById(R.id.deleteButton);
-            biometricManager = androidx.biometric.BiometricManager.from(itemView.getContext());
-            cardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int position = getAdapterPosition();
-                    user_object userObject = list.get(position);
-                    String id = userObject.getId();
-                    intent = new Intent(itemView.getContext(), add_notes.class);
-                    intent.putExtra("id",id);
-                    intent.putExtra("clickedCardView?",0);
-                    intent.putExtra("lockednote?",1);
-                    fingerprint fingerprint = new fingerprint(itemView.getContext(),intent,true);
-                    fingerprint.fingerprint(itemView.getContext(),intent,true);
-                }
-            });
-
-        }
-
+    @Override
+    public void onFail(String what, int position) {
     }
 }

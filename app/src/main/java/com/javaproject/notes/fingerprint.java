@@ -2,7 +2,6 @@ package com.javaproject.notes;
 
 import android.content.Context;
 import android.content.Intent;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -14,10 +13,14 @@ import androidx.fragment.app.FragmentActivity;
 import java.util.concurrent.Executor;
 
 public class fingerprint {
-    public fingerprint(Context context, Intent intent, Boolean openActivity) {
+    FingerPrintCallBack callBack;
+    public fingerprint(Context context) {
+    }
+    public void setfingerprintCallback(FingerPrintCallBack callBack){
+        this.callBack = callBack;
     }
 
-    public void fingerprint(Context context,Intent intent,Boolean openActivity){
+    public void fingerprint(Context context,String what, int position){
         BiometricManager biometricManager = androidx.biometric.BiometricManager.from(context);
         switch (biometricManager.canAuthenticate()) {
 
@@ -46,19 +49,19 @@ public class fingerprint {
             @Override
             public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
                 super.onAuthenticationError(errorCode, errString);
+                callBack.onFail(what,position);
             }
 
             // THIS METHOD IS CALLED WHEN AUTHENTICATION IS SUCCESS
             @Override
             public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
                 super.onAuthenticationSucceeded(result);
-                if (openActivity){
-                    context.startActivity(intent);
-                }
+                callBack.onSuccess(what,position);
             }
             @Override
             public void onAuthenticationFailed() {
                 super.onAuthenticationFailed();
+                callBack.onFail(what,position);
                 Toast.makeText(context,"Fingerprint authentication failed",Toast.LENGTH_SHORT).show();
             }
         });
@@ -68,5 +71,11 @@ public class fingerprint {
                 .setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_STRONG | BiometricManager.Authenticators.DEVICE_CREDENTIAL)
                 .build();
         biometricPrompt.authenticate(promptInfo);
+    }
+
+
+    public interface FingerPrintCallBack{
+        void onSuccess(String what, int position);
+        void onFail(String what, int position);
     }
 }
