@@ -1,5 +1,6 @@
 package com.javaproject.notes.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -21,13 +22,10 @@ import java.util.ArrayList;
 public class likedAdapter extends RecyclerView.Adapter<likedAdapter.MyViewHolder> {
     Context context;
     static ArrayList<user_object> list;
-    int[] colors;
-    int currentColorIndex = 0;
 
-    public likedAdapter(Context context, ArrayList<user_object> list,int[] colors) {
+    public likedAdapter(Context context, ArrayList<user_object> list) {
         this.context = context;
         likedAdapter.list = list;
-        this.colors = colors;
     }
 
     @NonNull
@@ -38,16 +36,11 @@ public class likedAdapter extends RecyclerView.Adapter<likedAdapter.MyViewHolder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull likedAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull likedAdapter.MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
         user_object userObject = list.get(position);
         holder.title.setText(userObject.getTitle());
         holder.cont.setText(userObject.getNotescontent());
-
-
-        int currentColor = colors[currentColorIndex];
-        holder.cardView.setCardBackgroundColor(currentColor);
-
-        currentColorIndex = (currentColorIndex + 1) % colors.length;
+        holder.cardView.setCardBackgroundColor(userObject.getColor());
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {

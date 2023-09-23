@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.view.Gravity;
@@ -38,12 +40,17 @@ public class add_notes extends AppCompatActivity implements View.OnClickListener
     String id;
     Boolean clicked = false;
     Boolean liked = false;
+    Boolean defaultLiked;
     String userID, listID;
     LottieAnimationView likeBtn;
     String title, content;
     Vibrator vibrator;
     int clickedCard,lockedcard;
+    int storedColor;
     String defTitle,defCont;
+    Resources resources;
+    int[] colors;
+    int currentColor, colorIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +70,17 @@ public class add_notes extends AppCompatActivity implements View.OnClickListener
         titleText = findViewById(R.id.titleTextView);
         likeBtn = findViewById(R.id.likeAnimBtn);
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        resources = getResources();
+        colors = resources.getIntArray(R.array.card_colors);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        colorIndex = sharedPreferences.getInt("colorIndex",0);
+
+        currentColor = colors[colorIndex];
+        colorIndex = (colorIndex + 1 ) % colors.length;
+        editor.putInt("colorIndex",colorIndex);
+        editor.apply();
 
         Intent intent = getIntent();
         listID = intent.getStringExtra("id");
@@ -102,22 +120,21 @@ public class add_notes extends AppCompatActivity implements View.OnClickListener
             content = notesText.getEditText().getText().toString();
             title = titleText.getText().toString();
             if (lockedcard == 1){
-                updateData(title,content,false,listID,notesref);
+                updateData(title,content,false,listID,notesref,storedColor);
                 finish();
             }
             else {
                 if (clicked) {
-                    updateData(title, content, liked, listID,notesref);
+                    updateData(title, content, liked, listID,notesref,storedColor);
                     finish();
                 } else {
                     notesref = FirebaseDatabase.getInstance().getReference().child("notes").child(userID).child(id);
-                    updateData(title, content, liked, id,notesref);
+                    updateData(title, content, liked, id,notesref,currentColor);
                     finish();
                 }
             }
         } else if (v.getId() == R.id.likeAnimBtn) {
             vibrator.vibrate(1);
-            HashMap<String, Object> hashMap = new HashMap<>();
             if (clicked) {
                 if (liked) {
                     likeBtn.setMinAndMaxProgress(0.5f, 1f);
@@ -137,22 +154,23 @@ public class add_notes extends AppCompatActivity implements View.OnClickListener
         super.onBackPressed();
         content = notesText.getEditText().getText().toString();
         title = titleText.getText().toString();
-        if (title.equals(defTitle) && content.equals(defCont)){
+        if (title.equals(defTitle) && content.equals(defCont) && defaultLiked == liked){
             finish();
         }
         else {
-            updateData(title,content,liked,listID,notesref);
+            updateData(title,content,liked,listID,notesref,storedColor);
             Toast.makeText(add_notes.this,"Note Saved",Toast.LENGTH_SHORT).show();
             finish();
         }
     }
 
-    private void updateData(String title, String content, Boolean liked, String listID, DatabaseReference reference) {
+    private void updateData(String title, String content, Boolean liked, String listID, DatabaseReference reference,int currentColor) {
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("id", listID);
         hashMap.put("title", title);
         hashMap.put("notescontent", content);
         hashMap.put("likedNote", liked);
+        hashMap.put("color",currentColor);
         reference.setValue(hashMap);
     }
     private void setDefaultData(DatabaseReference notesref){
@@ -166,10 +184,12 @@ public class add_notes extends AppCompatActivity implements View.OnClickListener
                         title = snapshot.child("title").getValue(String.class);
                         content = snapshot.child("notescontent").getValue(String.class);
                         liked = snapshot.child("likedNote").getValue(Boolean.class);
+                        storedColor = snapshot.child("color").getValue(Integer.class);
                         titleText.setText(title);
                         notesText.getEditText().setText(content);
                         defCont = content;
                         defTitle = title;
+                        defaultLiked = liked;
                     }
                 }
                 @Override

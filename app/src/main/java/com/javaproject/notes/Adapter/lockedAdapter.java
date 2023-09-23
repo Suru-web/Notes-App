@@ -42,14 +42,10 @@ import java.util.concurrent.Executor;
 public class lockedAdapter extends RecyclerView.Adapter<lockedAdapter.MyViewHolder> implements fingerprint.FingerPrintCallBack {
     Context context;
     static ArrayList<user_object> list;
-    int[] colors;
-    int currentColorIndex = 0;
-    CardView card;
 
-    public lockedAdapter(Context context, ArrayList<user_object> list,int[] colors) {
+    public lockedAdapter(Context context, ArrayList<user_object> list) {
         this.context = context;
         lockedAdapter.list = list;
-        this.colors = colors;
     }
 
     @NonNull
@@ -65,10 +61,8 @@ public class lockedAdapter extends RecyclerView.Adapter<lockedAdapter.MyViewHold
         holder.title.setText(userObject.getTitle());
         holder.cont.setVisibility(View.GONE);
         holder.lockimg.setVisibility(View.VISIBLE);
+        holder.cardView.setCardBackgroundColor(userObject.getColor());
         final boolean[] flipped = {false};
-        int currentColor = colors[currentColorIndex];
-        holder.cardView.setCardBackgroundColor(currentColor);
-        currentColorIndex = (currentColorIndex + 1) % colors.length;
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,7 +74,7 @@ public class lockedAdapter extends RecyclerView.Adapter<lockedAdapter.MyViewHold
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                FlipAnimationCardView(holder,currentColor,flipped);
+                FlipAnimationCardView(holder, userObject.getColor(), flipped);
                 holder.lock.setText("Unlock");
                 holder.delete.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -93,8 +87,7 @@ public class lockedAdapter extends RecyclerView.Adapter<lockedAdapter.MyViewHold
                 holder.lock.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        FlipAnimationCardView(holder,currentColor,flipped);
-                        Intent intent1 = new Intent(context, MainActivity.class);
+                        FlipAnimationCardView(holder, userObject.getColor(), flipped);
                         fingerprint fingerprint = new fingerprint(context);
                         fingerprint.fingerprint(context,"lock",position);
                         fingerprint.setfingerprintCallback(lockedAdapter.this);

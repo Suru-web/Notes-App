@@ -41,9 +41,7 @@ public class LockedNotes extends Fragment {
     ArrayList<user_object> list = new ArrayList<>();
     DatabaseReference database;
     String userID;
-    Resources resources;
     LottieAnimationView empty;
-    int[] colors;
     Boolean likedNoteExists = true;
     TextView emptytext;
 
@@ -52,11 +50,9 @@ public class LockedNotes extends Fragment {
                              Bundle savedInstanceState) {
         userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         binding = FragmentLockedNotesBinding.inflate(inflater,container,false);
-        resources = getResources();
-        colors = resources.getIntArray(R.array.card_colors);
         empty = binding.emptyAnim;
         emptytext = binding.emptyTextView;
-        lockedAdapter lockedAdapter = new lockedAdapter(getContext(),list,colors);
+        lockedAdapter lockedAdapter = new lockedAdapter(getContext(),list);
         binding.notesLockedList.setAdapter(lockedAdapter);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());

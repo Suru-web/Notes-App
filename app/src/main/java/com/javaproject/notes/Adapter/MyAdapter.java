@@ -34,13 +34,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
 
     Context context;
     static ArrayList<user_object> list;
-    int[] colors;
-    int currentColorIndex = 0;
+    int nowColor;
 
-    public MyAdapter(Context context, ArrayList<user_object> list,int[] colors) {
+    public MyAdapter(Context context, ArrayList<user_object> list) {
         this.context = context;
         MyAdapter.list = list;
-        this.colors = colors;
     }
 
     @NonNull
@@ -55,24 +53,19 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
         user_object userObject = list.get(position);
         holder.title.setText(userObject.getTitle());
         holder.cont.setText(userObject.getNotescontent());
+        nowColor = userObject.getColor();
+        holder.cardView.setCardBackgroundColor(nowColor);
         final boolean[] flipped = {false};
-
-
-        int currentColor = colors[currentColorIndex];
-        holder.cardView.setCardBackgroundColor(currentColor);
-
-        currentColorIndex = (currentColorIndex + 1) % colors.length;
-        holder.itemView.setOnLongClickListener(this);
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                FlipAnimationCardView(holder,currentColor,flipped);
+                FlipAnimationCardView(holder, userObject.getColor(), flipped);
                 Handler handler = new Handler();
                 long delayMillis = 1000;
                 holder.delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        FlipAnimationCardView(holder,currentColor,flipped);
+                        FlipAnimationCardView(holder, userObject.getColor(), flipped);
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
@@ -84,7 +77,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
                 holder.lock.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        FlipAnimationCardView(holder,currentColor,flipped);
+                        FlipAnimationCardView(holder, userObject.getColor(), flipped);
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
