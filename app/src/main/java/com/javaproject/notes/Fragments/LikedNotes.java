@@ -62,7 +62,7 @@ public class LikedNotes extends Fragment {
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
         binding.notesLikedList.setLayoutManager(layoutManager);
         database = FirebaseDatabase.getInstance().getReference("notes").child(userID);
-        System.out.println("HIIIIIIIIIIIIIIIIIIIIIIIIIIIII");
+        database.keepSynced(true);
         database.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

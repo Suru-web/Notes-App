@@ -66,6 +66,7 @@ public class AllNotes extends Fragment {
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
         binding.notesList.setLayoutManager(layoutManager);
         database = FirebaseDatabase.getInstance().getReference("notes").child(userID);
+        database.keepSynced(true);
         database.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

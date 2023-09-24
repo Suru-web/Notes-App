@@ -62,6 +62,7 @@ public class LockedNotes extends Fragment {
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
         binding.notesLockedList.setLayoutManager(layoutManager);
         database = FirebaseDatabase.getInstance().getReference("lockedNotes").child(userID);
+        database.keepSynced(true);
         database.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

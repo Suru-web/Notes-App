@@ -41,14 +41,6 @@ public class likedAdapter extends RecyclerView.Adapter<likedAdapter.MyViewHolder
         holder.title.setText(userObject.getTitle());
         holder.cont.setText(userObject.getNotescontent());
         holder.cardView.setCardBackgroundColor(userObject.getColor());
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Toast.makeText(context, "Item long pressed! "+ position, Toast.LENGTH_SHORT).show();
-                return true;
-            }
-        });
-
     }
 
     @Override
