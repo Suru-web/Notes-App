@@ -66,13 +66,21 @@
             android:text="Content"
             android:textColor="@color/black"
             android:textSize="16dp" />
-        <ImageView
+
+        <com.airbnb.lottie.LottieAnimationView
             android:layout_width="match_parent"
             android:layout_height="140dp"
-            android:src="@drawable/padlock"
-            android:padding="40dp"
+            app:lottie_rawRes="@raw/locked"
             android:visibility="gone"
             android:id="@+id/lockImage"/>
+
+<!--        <ImageView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="140dp"-->
+<!--            android:src="@drawable/padlock"-->
+<!--            android:padding="40dp"-->
+<!--            android:visibility="gone"-->
+<!--            android:id="@+id/lockImage"/>-->
 
     </LinearLayout>
 

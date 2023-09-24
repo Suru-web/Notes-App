@@ -27,6 +27,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -61,6 +62,8 @@ public class lockedAdapter extends RecyclerView.Adapter<lockedAdapter.MyViewHold
         holder.title.setText(userObject.getTitle());
         holder.cont.setVisibility(View.GONE);
         holder.lockimg.setVisibility(View.VISIBLE);
+        holder.lockimg.setMinAndMaxProgress(0f,0.8f);
+        holder.lockimg.playAnimation();
         holder.cardView.setCardBackgroundColor(userObject.getColor());
         final boolean[] flipped = {false};
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -108,9 +111,8 @@ public class lockedAdapter extends RecyclerView.Adapter<lockedAdapter.MyViewHold
 
         public CardView cardView;
         TextView title,cont;
-        ImageView lockimg;
+        LottieAnimationView lockimg;
         BiometricManager biometricManager;
-        Intent intent;
         LinearLayout front,back;
         Button lock,delete;
 
@@ -127,7 +129,6 @@ public class lockedAdapter extends RecyclerView.Adapter<lockedAdapter.MyViewHold
             lock = itemView.findViewById(R.id.lockButton);
             delete = itemView.findViewById(R.id.deleteButton);
             biometricManager = androidx.biometric.BiometricManager.from(itemView.getContext());
-
 
         }
 
