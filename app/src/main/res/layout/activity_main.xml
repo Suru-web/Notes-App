@@ -1,62 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:background="@color/black"
-    tools:context=".MainActivity">
-    <TextView
-        android:id="@+id/tt1"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="40dp"
-        android:fontFamily="@font/prompt"
-        android:text="My"
-        android:textColor="@color/white"
-        android:textSize="60dp"
-        android:textStyle="normal" />
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/tt2"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tt1"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="-20dp"
-        android:fontFamily="@font/prompt"
-        android:text="Notes"
-        android:textColor="@color/white"
-        android:textSize="60dp"
-        android:textStyle="normal" />
-
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLayout"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="58dp"
-        android:paddingBottom="10dp"
-        android:layout_marginStart="20dp"
-        app:tabTextAppearance="@style/tab_text"
-        android:elevation="16dp"
-        android:stateListAnimator="@null"
+        android:layout_height="match_parent"
         android:background="@color/black"
-        app:tabBackground="@drawable/tab_color_selector"
-        app:tabGravity="fill"
-        app:tabIndicator="@color/white"
-        app:tabMaxWidth="0dp"
-        app:tabMode="scrollable"
-        app:tabSelectedTextColor="@color/black"
-        app:tabTextColor="@color/white" />
+        android:orientation="vertical"
+        tools:context=".MainActivity"
+        tools:layout_editor_absoluteX="112dp"
+        tools:layout_editor_absoluteY="-68dp">
+
+        <TextView
+            android:id="@+id/tt1"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="40dp"
+            android:fontFamily="@font/prompt"
+            android:text="My"
+            android:textColor="@color/white"
+            android:textSize="60dp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/tt2"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tt1"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="-20dp"
+            android:fontFamily="@font/prompt"
+            android:text="Notes"
+            android:textColor="@color/white"
+            android:textSize="60dp"
+            android:textStyle="normal" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="58dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@color/black"
+            android:elevation="16dp"
+            android:paddingBottom="10dp"
+            android:stateListAnimator="@null"
+            app:tabBackground="@drawable/tab_color_selector"
+            app:tabGravity="fill"
+            app:tabIndicator="@color/white"
+            app:tabMaxWidth="0dp"
+            app:tabMode="scrollable"
+            app:tabSelectedTextColor="@color/black"
+            app:tabTextAppearance="@style/tab_text"
+            app:tabTextColor="@color/white" />
 
         <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewPager"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/viewPager"/>
+            android:layout_height="wrap_content" />
 
 
-</LinearLayout>
+    </LinearLayout>
+    <ImageButton
+        android:id="@+id/menuButton"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        android:src="@drawable/menu"
+        android:scaleType="centerCrop"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:backgroundTint="@color/black"
+        android:layout_marginTop="142dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
