@@ -2,6 +2,7 @@
 <resources>
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentTransitions">true</item>
     </style>
     <style name="tab_text" parent="@android:style/TextAppearance.Widget.TabWidget">
         <item name="android:fontFamily">@font/balsamiq_sans</item>

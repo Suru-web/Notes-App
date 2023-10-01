@@ -7,8 +7,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.transition.Fade;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -56,12 +59,14 @@ public class add_notes extends AppCompatActivity implements View.OnClickListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_notes);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        Window window = this.getWindow();
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        window.setStatusBarColor(this.getResources().getColor(R.color.black));
-        window.setNavigationBarColor(this.getResources().getColor(R.color.black));
+        Fade fade = new Fade();
+        fade.excludeTarget(getWindow().getClass(),true);
+        fade.excludeTarget(android.R.id.statusBarBackground,true);
+        fade.excludeTarget(android.R.id.navigationBarBackground,true);
+        getWindow().setEnterTransition(fade);
 
 
         notesadd = findViewById(R.id.noteaddedBtn);
@@ -154,13 +159,17 @@ public class add_notes extends AppCompatActivity implements View.OnClickListener
         super.onBackPressed();
         content = notesText.getEditText().getText().toString();
         title = titleText.getText().toString();
-        if (title.equals(defTitle) && content.equals(defCont) && defaultLiked == liked){
+        if (title.isEmpty() && content.isEmpty()){
             finish();
         }
         else {
-            updateData(title,content,liked,listID,notesref,storedColor);
-            Toast.makeText(add_notes.this,"Note Saved",Toast.LENGTH_SHORT).show();
-            finish();
+            if (title.equals(defTitle) && content.equals(defCont) && defaultLiked == liked) {
+                finish();
+            } else {
+                updateData(title, content, liked, listID, notesref, storedColor);
+                Toast.makeText(add_notes.this, "Note Saved", Toast.LENGTH_SHORT).show();
+                finish();
+            }
         }
     }
 

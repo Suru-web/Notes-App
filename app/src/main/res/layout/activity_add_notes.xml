@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
-    tools:context=".add_notes">
+    tools:context=".add_notes"
+    android:layout_marginTop="20dp"
+    android:transitionName="shared_card_transition">
 
     <Button
         android:id="@+id/backButton"

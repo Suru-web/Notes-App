@@ -1,10 +1,12 @@
 package com.javaproject.notes.Fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -102,7 +104,11 @@ public class AllNotes extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), add_notes.class);
-                startActivity(intent);
+                View sharedView = addnote;
+                String transitionName = getString(R.string.transition_card); // Use the same string as in the XML
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        (Activity) getContext(), sharedView, transitionName);
+                startActivity(intent,options.toBundle());
             }
         });
 

@@ -5,9 +5,11 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
+import android.transition.Fade;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +21,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -56,6 +60,31 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
         nowColor = userObject.getColor();
         holder.cardView.setCardBackgroundColor(nowColor);
         final boolean[] flipped = {false};
+
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int position = holder.getAdapterPosition();
+                user_object userObject = list.get(position);
+                String id = userObject.getId();
+
+
+                // Create an Intent for the "Add Notes" activity
+                Intent intent = new Intent(context, add_notes.class);
+                intent.putExtra("id",id);
+                intent.putExtra("clickedCardView?",1);
+
+                // Set up the shared element transition
+                View sharedView = holder.cardView;
+                String transitionName = context.getString(R.string.transition_card); // Use the same string as in the XML
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        (Activity) context, sharedView, transitionName);
+
+                // Start the activity with the transition animation
+                context.startActivity(intent, options.toBundle());
+            }
+        });
+
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -106,7 +135,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
         anim2.setInterpolator(new AccelerateInterpolator());
         if (!flipped[0]) {
             anim1.start();
-            System.out.println("Card 1");
             anim1.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
@@ -122,7 +150,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
         }
         else {
             anim1.start();
-            System.out.println("Card 2");
             anim1.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
@@ -188,19 +215,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
             back = itemView.findViewById(R.id.backLayout);
             lock = itemView.findViewById(R.id.lockButton);
             delete = itemView.findViewById(R.id.deleteButton);
-
-            cardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int position = getAdapterPosition();
-                    user_object userObject = list.get(position);
-                    String id = userObject.getId();
-                    Intent intent = new Intent(itemView.getContext(), add_notes.class);
-                    intent.putExtra("id",id);
-                    intent.putExtra("clickedCardView?",1);
-                    itemView.getContext().startActivity(intent);
-                }
-            });
 
         }
 
