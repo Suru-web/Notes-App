@@ -1,70 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.circularreveal.cardview.CircularRevealCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="200dp"
-    android:layout_height="80dp"
+    android:layout_width="175dp"
+    android:layout_height="101dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_marginEnd="20dp"
     android:backgroundTint="#F6F4EB"
     app:cardCornerRadius="16dp"
-    app:strokeWidth="0dp"
+    app:strokeWidth="1dp"
+    android:layout_gravity="end"
     app:cardElevation="12dp">
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="175dp"
+        android:layout_height="100dp"
         android:orientation="vertical">
+        <TextView
+            android:id="@+id/ComNotes"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Community Notes"
+            android:paddingTop="15dp"
+            android:paddingStart="15dp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/prompt"
+            android:textSize="14dp"/>
 
-        <LinearLayout
-            android:layout_width="200dp"
-            android:layout_height="40dp"
-            android:paddingLeft="10dp"
-            android:id="@+id/ComNotesLL"
-            android:orientation="horizontal">
 
-            <ImageButton
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:padding="9dp"
-                android:background="#F6F4EB"
-                android:src="@drawable/communitynotes"
-                android:scaleType="centerCrop"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="4dp"
-                android:text="Community Notes"
-                android:textColor="@color/black"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/balsamiq_sans"
-                android:textSize="16dp"/>
+        <View
+            android:id="@+id/divider3"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider" />
 
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="220dp"
-            android:layout_height="40dp"
-            android:paddingLeft="10dp"
-            android:gravity="fill_vertical"
-            android:id="@+id/SignOutLL"
-            android:orientation="horizontal">
-
-            <ImageButton
-                android:layout_width="38dp"
-                android:layout_height="38dp"
-                android:padding="9dp"
-                android:src="@drawable/signout"
-                android:background="#F6F4EB"
-                android:scaleType="centerCrop"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="4dp"
-                android:text="Log Out"
-                android:paddingTop="8dp"
-                android:textColor="@color/black"
-                android:fontFamily="@font/balsamiq_sans"
-                android:textSize="16dp"/>
-
-        </LinearLayout>
+        <TextView
+            android:id="@+id/SignOut"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Log Out"
+            android:paddingTop="10dp"
+            android:paddingStart="15dp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/prompt"
+            android:textSize="14dp"/>
 
     </LinearLayout>
 

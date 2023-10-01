@@ -1,28 +1,20 @@
 package com.javaproject.notes;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
-import android.transition.Fade;
-import android.transition.Transition;
-import android.transition.TransitionInflater;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.javaproject.notes.Fragments.FragmentAdapter;
@@ -35,7 +27,8 @@ public class MainActivity extends AppCompatActivity {
     Drawable whiteMenu,orangeMenu;
     TransitionDrawable crossfade1,crossfade2;
     PopupWindow popupWindow;
-    LinearLayout comnotes,signoutll;
+    TextView comnotes,signoutll;
+    Animation popupAnimation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,12 +54,11 @@ public class MainActivity extends AppCompatActivity {
         crossfade2.setCrossFadeEnabled(true);
 
 
-
         View popupView = LayoutInflater.from(this).inflate(R.layout.menulayout,null);
-        popupWindow = new PopupWindow(popupView, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        popupWindow = new PopupWindow(popupView, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT,true);
         popupWindow.setOutsideTouchable(true);
 
-        comnotes = popupView.findViewById(R.id.ComNotesLL);
+        comnotes = popupView.findViewById(R.id.ComNotes);
         comnotes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        signoutll = popupView.findViewById(R.id.SignOutLL);
+        signoutll = popupView.findViewById(R.id.SignOut);
         signoutll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        popupAnimation = AnimationUtils.loadAnimation(this, R.anim.right_top_open);
 
         popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
@@ -97,11 +90,13 @@ public class MainActivity extends AppCompatActivity {
         });
 
         menubtn.setImageDrawable(crossfade1);
+
         menubtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!clicked) {
-                    popupWindow.showAtLocation(v, Gravity.END, 50, -500);
+                    popupWindow.showAtLocation(v,Gravity.END,40,-725);
+                    popupView.startAnimation(popupAnimation);
                     menubtn.setImageDrawable(crossfade1);
                     crossfade1.startTransition(500);
                     clicked = true;

@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.transition.ChangeBounds;
 import android.transition.Fade;
 import android.view.Gravity;
 import android.view.View;
@@ -67,6 +68,9 @@ public class add_notes extends AppCompatActivity implements View.OnClickListener
         fade.excludeTarget(android.R.id.statusBarBackground,true);
         fade.excludeTarget(android.R.id.navigationBarBackground,true);
         getWindow().setEnterTransition(fade);
+        ChangeBounds bounds = new ChangeBounds();
+        bounds.setDuration(200);
+        getWindow().setSharedElementEnterTransition(bounds);
 
 
         notesadd = findViewById(R.id.noteaddedBtn);

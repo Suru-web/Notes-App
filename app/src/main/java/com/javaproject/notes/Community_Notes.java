@@ -22,6 +22,7 @@ public class Community_Notes extends AppCompatActivity {
         backButton = findViewById(R.id.backbtnComNotes);
         comm = findViewById(R.id.communityAnimation);
         comm.setMinAndMaxProgress(0f,1f);
+        comm.setRepeatCount(-1);
         comm.playAnimation();
 
 

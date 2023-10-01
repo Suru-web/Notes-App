@@ -24,25 +24,36 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:src="@drawable/back"
-            android:padding="12dp"
+            android:padding="15dp"
             android:backgroundTint="@color/black"
             android:scaleType="centerCrop"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
-            android:layout_marginStart="10dp"/>
+            android:layout_marginStart="5dp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="14dp"
-            android:layout_marginLeft="14dp"
             android:layout_toEndOf="@+id/backbtnComNotes"
-            android:layout_toRightOf="@+id/backbtnComNotes"
             android:fontFamily="@font/balsamiq_sans"
             android:text="Community Notes"
             android:textColor="@color/white"
-            android:textSize="26dp" />
+            android:textSize="24dp" />
+
+        <ImageButton
+            android:id="@+id/addCommNotes"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/add"
+            android:scaleType="centerCrop"
+            android:backgroundTint="@color/black"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:padding="15dp"
+            android:visibility="gone"
+            android:layout_marginEnd="5dp"/>
 
 
     </RelativeLayout>
@@ -53,29 +64,47 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rr1"
         android:layout_marginTop="10dp"
+        android:visibility="gone"
         android:id="@+id/communityRecyclerView"/>
 
-    <com.airbnb.lottie.LottieAnimationView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:lottie_rawRes="@raw/community"
-        app:layout_constraintTop_toBottomOf="@+id/communityRecyclerView"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:id="@+id/communityAnimation"/>
+        android:layout_marginTop="50dp"
+        app:layout_constraintTop_toBottomOf="@+id/communityRecyclerView">
 
-    <Button
-        android:id="@+id/createComm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Create"
-        android:fontFamily="@font/balsamiq_sans"
-        android:textSize="16dp"
-        android:backgroundTint="@color/orange"
-        android:textColor="@color/black"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="40dp"/>
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            app:lottie_rawRes="@raw/catsleep"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/communityAnimation"/>
+
+        <TextView
+            android:id="@+id/nonotes"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="No Community notes yet.."
+            android:layout_below="@+id/communityAnimation"
+            android:layout_marginBottom="10dp"
+            android:textSize="21sp"
+            android:fontFamily="@font/balsamiq_sans"
+            android:textAlignment="center"
+            android:textColor="@color/white"/>
+
+        <Button
+            android:id="@+id/createComm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create One"
+            android:fontFamily="@font/balsamiq_sans"
+            android:textSize="16dp"
+            android:layout_below="@+id/nonotes"
+            android:layout_centerHorizontal="true"
+            android:backgroundTint="@color/orange"
+            android:textColor="@color/black"/>
+
+    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
