@@ -6,8 +6,11 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
+import android.transition.Transition;
+import android.transition.TransitionSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -28,14 +31,12 @@ public class MainActivity extends AppCompatActivity {
     TransitionDrawable crossfade1,crossfade2;
     PopupWindow popupWindow;
     TextView comnotes,signoutll;
-    Animation popupAnimation;
+    Animation popupAnimationOpen,popupAnimationClose;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-
-
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -44,19 +45,19 @@ public class MainActivity extends AppCompatActivity {
         menubtn = findViewById(R.id.menuButton);
 
 
-
-
         whiteMenu = getResources().getDrawable(R.drawable.menu);
         orangeMenu = getResources().getDrawable(R.drawable.menu_orange);
         crossfade1 = new TransitionDrawable(new Drawable[]{whiteMenu, orangeMenu});
         crossfade1.setCrossFadeEnabled(true);
         crossfade2 = new TransitionDrawable(new Drawable[]{orangeMenu, whiteMenu});
         crossfade2.setCrossFadeEnabled(true);
+        popupAnimationOpen = AnimationUtils.loadAnimation(this, R.anim.right_top_open);
+        popupAnimationClose = AnimationUtils.loadAnimation(this,R.anim.right_top_close);
 
 
         View popupView = LayoutInflater.from(this).inflate(R.layout.menulayout,null);
-        popupWindow = new PopupWindow(popupView, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT,true);
-        popupWindow.setOutsideTouchable(true);
+        popupWindow = new PopupWindow(popupView, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        popupWindow.setOutsideTouchable(false);
 
         comnotes = popupView.findViewById(R.id.ComNotes);
         comnotes.setOnClickListener(new View.OnClickListener() {
@@ -78,17 +79,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        popupAnimation = AnimationUtils.loadAnimation(this, R.anim.right_top_open);
-
-        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                menubtn.setImageDrawable(crossfade2);
-                crossfade2.startTransition(500);
-                clicked = false;
-            }
-        });
-
         menubtn.setImageDrawable(crossfade1);
 
         menubtn.setOnClickListener(new View.OnClickListener() {
@@ -96,13 +86,27 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (!clicked) {
                     popupWindow.showAtLocation(v,Gravity.END,40,-725);
-                    popupView.startAnimation(popupAnimation);
                     menubtn.setImageDrawable(crossfade1);
                     crossfade1.startTransition(500);
+                    popupView.startAnimation(popupAnimationOpen);
                     clicked = true;
                 }
                 else {
-                    popupWindow.dismiss();
+                    popupView.startAnimation(popupAnimationClose);
+                    popupView.getAnimation().setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            popupWindow.dismiss();
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+                        }
+                    });
                     menubtn.setImageDrawable(crossfade2);
                     crossfade2.startTransition(500);
                     clicked = false;
