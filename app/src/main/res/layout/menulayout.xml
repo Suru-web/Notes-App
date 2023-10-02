@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.circularreveal.cardview.CircularRevealCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="175dp"
-    android:layout_height="101dp"
+    android:layout_width="200dp"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:backgroundTint="#F6F4EB"
+    android:backgroundTint="@color/dark_grey"
     app:cardCornerRadius="16dp"
-    app:strokeWidth="1dp"
+    app:strokeWidth="0dp"
     android:layout_gravity="end"
     app:cardElevation="12dp">
 
     <LinearLayout
-        android:layout_width="175dp"
-        android:layout_height="100dp"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
         <TextView
             android:id="@+id/ComNotes"
@@ -20,7 +20,7 @@
             android:text="Community Notes"
             android:paddingTop="15dp"
             android:paddingStart="15dp"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:fontFamily="@font/prompt"
             android:textSize="14dp"/>
 
@@ -28,7 +28,8 @@
         <View
             android:id="@+id/divider3"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="1.5dp"
+            android:backgroundTint="@color/white"
             android:background="?android:attr/listDivider" />
 
         <TextView
@@ -36,9 +37,25 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:text="Log Out"
-            android:paddingTop="10dp"
+            android:paddingTop="15dp"
             android:paddingStart="15dp"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
+            android:fontFamily="@font/prompt"
+            android:textSize="14dp"/>
+        <View
+            android:id="@+id/divider4"
+            android:layout_width="match_parent"
+            android:layout_height="1.5dp"
+            android:backgroundTint="@color/white"
+            android:background="?android:attr/listDivider" />
+        <TextView
+            android:id="@+id/settingsLL"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Settings"
+            android:paddingTop="15dp"
+            android:paddingStart="15dp"
+            android:textColor="@color/white"
             android:fontFamily="@font/prompt"
             android:textSize="14dp"/>
 

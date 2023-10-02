@@ -1,5 +1,7 @@
 package com.javaproject.notes.Fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 
@@ -59,7 +61,10 @@ public class LikedNotes extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         binding.notesLikedList.setLayoutManager(linearLayoutManager);
 
-        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        int snapColumn = sharedPref.getInt("snapColumn", 2);
+
+        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), snapColumn);
         binding.notesLikedList.setLayoutManager(layoutManager);
         database = FirebaseDatabase.getInstance().getReference("notes").child(userID);
         database.keepSynced(true);

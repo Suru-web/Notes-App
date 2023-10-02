@@ -1,5 +1,7 @@
 package com.javaproject.notes.Fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 
@@ -59,7 +61,10 @@ public class LockedNotes extends Fragment {
         binding.notesLockedList.setLayoutManager(linearLayoutManager);
 
 
-        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        int snapColumn = sharedPref.getInt("snapColumn", 2);
+
+        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), snapColumn);
         binding.notesLockedList.setLayoutManager(layoutManager);
         database = FirebaseDatabase.getInstance().getReference("lockedNotes").child(userID);
         database.keepSynced(true);

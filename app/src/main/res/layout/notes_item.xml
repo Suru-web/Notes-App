@@ -79,7 +79,7 @@
     <LinearLayout
         android:id="@+id/backLayout"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
+        android:layout_height="186.4999dp"
         android:layout_gravity="center"
         android:visibility="gone"
         android:gravity="center"
@@ -92,6 +92,9 @@
             android:layout_height="50dp"
             android:text="Delete note"
             android:padding="0dp"
+            android:layout_margin="10dp"
+            android:elevation="12dp"
+            android:stateListAnimator="@null"
             android:fontFamily="@font/balsamiq_sans"
             android:textSize="16sp"
             android:textColor="@color/black"/>
@@ -101,6 +104,8 @@
             android:layout_height="50dp"
             android:text="Lock note"
             android:padding="0dp"
+            android:elevation="12dp"
+            android:stateListAnimator="@null"
             android:fontFamily="@font/balsamiq_sans"
             android:textSize="16sp"
             android:textColor="@color/black"/>

@@ -36,8 +36,7 @@ public class MainActivity extends AppCompatActivity {
     Drawable whiteMenu,orangeMenu;
     TransitionDrawable crossfade1,crossfade2;
     PopupWindow popupWindow;
-    TextView comnotes,signoutll;
-    Animation popupAnimationOpen,popupAnimationClose;
+    TextView comnotes,signoutll,settingsbtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +83,14 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
+        settingsbtn = popupView.findViewById(R.id.settingsLL);
+        settingsbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, settings.class);
+                startActivity(intent);
+            }
+        });
 
         menubtn.setImageDrawable(crossfade1);
 
@@ -91,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!clicked) {
-                    popupWindow.showAtLocation(v,Gravity.END,40,-725);
+                    popupWindow.showAtLocation(v,Gravity.END,40,-675);
                     menubtn.setImageDrawable(crossfade1);
                     crossfade1.startTransition(500);
                     clicked = true;

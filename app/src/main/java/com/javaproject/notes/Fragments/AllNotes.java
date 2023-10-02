@@ -1,7 +1,9 @@
 package com.javaproject.notes.Fragments;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 
@@ -65,7 +67,10 @@ public class AllNotes extends Fragment {
 
         addnote = binding.addNoteBtn;
 
-        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        int snapColumn = sharedPref.getInt("snapColumn", 2);
+
+        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), snapColumn);
         binding.notesList.setLayoutManager(layoutManager);
         database = FirebaseDatabase.getInstance().getReference("notes").child(userID);
         database.keepSynced(true);

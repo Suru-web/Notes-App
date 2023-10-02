@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context=".settings">
+
+    <RelativeLayout
+        android:id="@+id/rr1Settings"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/backBtnSettings"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/back"
+            android:padding="15dp"
+            android:scaleType="centerCrop"
+            android:backgroundTint="@color/black"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Settings"
+            android:textColor="@color/white"
+            android:fontFamily="@font/prompt"
+            android:textSize="26sp"
+            android:layout_toRightOf="@+id/backBtnSettings"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"/>
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/rr1Settings"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+
+        <TextView
+            android:id="@+id/textAppAppearance"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="App appearance"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/white"
+            android:textSize="21sp"
+            android:layout_marginStart="20dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_centerVertical="true"
+            android:fontFamily="@font/prompt"/>
+
+        <LinearLayout
+            android:layout_below="@+id/textAppAppearance"
+            android:layout_width="match_parent"
+            android:padding="20dp"
+            android:background="@drawable/all_side_round"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/gridColumnNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Change Grid Column number"
+                    android:textColor="@color/white"
+                    android:alpha="0.8"
+                    android:fontFamily="@font/prompt"
+                    android:textSize="16sp"/>
+                <ImageButton
+                    android:id="@+id/colDropDown"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:backgroundTint="@color/dark_grey"
+                    android:padding="0dp"
+                    android:layout_marginStart="120dp"
+                    android:src="@drawable/downarrow"
+                    android:scaleType="centerCrop"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/imageTextLL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+
+                <!-- First Pair: ImageButton and TextView -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/oneColBtn"
+                        android:layout_width="110dp"
+                        android:layout_height="200dp"
+                        android:src="@drawable/onecol"
+                        android:padding="10dp"
+                        android:background="@drawable/all_side_round"
+                        android:scaleType="centerCrop"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Single Column"
+                        android:layout_margin="10dp"
+                        android:paddingEnd="10dp"
+                        android:textColor="@color/white"
+                        android:alpha="0.8"/>
+                </LinearLayout>
+
+                <!-- Second Pair: ImageButton and TextView -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/twoColBtn"
+                        android:layout_width="110dp"
+                        android:layout_height="200dp"
+                        android:src="@drawable/twocol"
+                        android:padding="10dp"
+                        android:background="@drawable/all_side_round"
+                        android:scaleType="centerCrop"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Double Column"
+                        android:layout_margin="10dp"
+                        android:textColor="@color/white"
+                        android:alpha="0.8"/>
+                </LinearLayout>
+
+                <!-- Third Pair: ImageButton and TextView -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/threeColBtn"
+                        android:layout_width="110dp"
+                        android:layout_height="200dp"
+                        android:src="@drawable/threecol"
+                        android:padding="10dp"
+                        android:background="@drawable/all_side_round"
+                        android:scaleType="centerCrop"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Triple Column"
+                        android:layout_margin="10dp"
+                        android:textColor="@color/white"
+                        android:alpha="0.8"/>
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
