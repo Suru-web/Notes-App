@@ -2,8 +2,13 @@ package com.javaproject.notes.Adapter;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.os.Build;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,13 +62,15 @@ public class likedAdapter extends RecyclerView.Adapter<likedAdapter.MyViewHolder
                 intent.putExtra("clickedCardView?",1);
 
                 // Set up the shared element transition
-                View sharedView = holder.cardView;
-                String transitionName = context.getString(R.string.transition_card); // Use the same string as in the XML
-                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                        (Activity) context, sharedView, transitionName);
+                Bundle b = null;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    Bitmap bitmap = Bitmap.createBitmap(v.getWidth(), v.getHeight(), Bitmap.Config.ARGB_8888);
+                    bitmap.eraseColor(Color.parseColor("#000000"));
+                    b = ActivityOptions.makeThumbnailScaleUpAnimation(v, bitmap, 0, 0).toBundle();
+                }
 
                 // Start the activity with the transition animation
-                context.startActivity(intent, options.toBundle());
+                context.startActivity(intent, b);
             }
         });
     }

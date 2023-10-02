@@ -10,10 +10,12 @@ import androidx.core.app.ActivityOptionsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridLayout;
 import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -62,8 +64,6 @@ public class AllNotes extends Fragment {
         emptytext.setVisibility(View.GONE);
 
         addnote = binding.addNoteBtn;
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        binding.notesList.setLayoutManager(linearLayoutManager);
 
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
         binding.notesList.setLayoutManager(layoutManager);

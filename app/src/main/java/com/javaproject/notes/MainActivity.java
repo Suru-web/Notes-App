@@ -2,9 +2,13 @@ package com.javaproject.notes;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.transition.ChangeBounds;
@@ -67,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
                 popupWindow.dismiss();
                 Intent intent = new Intent(MainActivity.this, Community_Notes.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.right_top_open,R.anim.right_top_close);
             }
         });
         signoutll = popupView.findViewById(R.id.SignOut);

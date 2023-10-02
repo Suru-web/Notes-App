@@ -3,12 +3,15 @@ package com.javaproject.notes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.transition.ChangeBounds;
@@ -17,6 +20,8 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -68,9 +73,6 @@ public class add_notes extends AppCompatActivity implements View.OnClickListener
         fade.excludeTarget(android.R.id.statusBarBackground,true);
         fade.excludeTarget(android.R.id.navigationBarBackground,true);
         getWindow().setEnterTransition(fade);
-        ChangeBounds bounds = new ChangeBounds();
-        bounds.setDuration(200);
-        getWindow().setSharedElementEnterTransition(bounds);
 
 
         notesadd = findViewById(R.id.noteaddedBtn);
@@ -111,8 +113,6 @@ public class add_notes extends AppCompatActivity implements View.OnClickListener
             notesadd.setVisibility(View.VISIBLE);
             notesadd.setText("Done");
         }
-
-
         goback.setOnClickListener(this);
         notesadd.setOnClickListener(this);
         likeBtn.setOnClickListener(this);

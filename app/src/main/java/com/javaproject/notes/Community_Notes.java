@@ -25,14 +25,6 @@ public class Community_Notes extends AppCompatActivity {
         comm.setRepeatCount(-1);
         comm.playAnimation();
 
-
-
-
-
-
-
-
-
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

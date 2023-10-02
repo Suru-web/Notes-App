@@ -6,15 +6,22 @@ import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.transition.Fade;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
+import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -67,21 +74,17 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
                 int position = holder.getAdapterPosition();
                 user_object userObject = list.get(position);
                 String id = userObject.getId();
+                Bundle b = null;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    Bitmap bitmap = Bitmap.createBitmap(v.getWidth(), v.getHeight(), Bitmap.Config.ARGB_8888);
+                    bitmap.eraseColor(Color.parseColor("#000000"));
+                    b = ActivityOptions.makeThumbnailScaleUpAnimation(v, bitmap, 0, 0).toBundle();
+                }
 
-
-                // Create an Intent for the "Add Notes" activity
                 Intent intent = new Intent(context, add_notes.class);
                 intent.putExtra("id",id);
                 intent.putExtra("clickedCardView?",1);
-
-                // Set up the shared element transition
-                View sharedView = holder.cardView;
-                String transitionName = context.getString(R.string.transition_card); // Use the same string as in the XML
-                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                        (Activity) context, sharedView, transitionName);
-
-                // Start the activity with the transition animation
-                context.startActivity(intent, options.toBundle());
+                context.startActivity(intent, b);
             }
         });
 

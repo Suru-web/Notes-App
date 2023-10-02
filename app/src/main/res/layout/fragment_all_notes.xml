@@ -17,9 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:spanCount="2"
-            tools:layout_editor_absoluteX="95dp"
-            tools:layout_editor_absoluteY="86dp" />
+            app:spanCount="2" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/addNoteBtn"
