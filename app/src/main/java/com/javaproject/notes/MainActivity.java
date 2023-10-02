@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.transition.ChangeBounds;
 import android.transition.Transition;
 import android.transition.TransitionSet;
 import android.view.Gravity;
@@ -51,13 +53,12 @@ public class MainActivity extends AppCompatActivity {
         crossfade1.setCrossFadeEnabled(true);
         crossfade2 = new TransitionDrawable(new Drawable[]{orangeMenu, whiteMenu});
         crossfade2.setCrossFadeEnabled(true);
-        popupAnimationOpen = AnimationUtils.loadAnimation(this, R.anim.right_top_open);
-        popupAnimationClose = AnimationUtils.loadAnimation(this,R.anim.right_top_close);
 
 
         View popupView = LayoutInflater.from(this).inflate(R.layout.menulayout,null);
         popupWindow = new PopupWindow(popupView, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
-        popupWindow.setOutsideTouchable(false);
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setAnimationStyle(R.style.rightTopPopup);
 
         comnotes = popupView.findViewById(R.id.ComNotes);
         comnotes.setOnClickListener(new View.OnClickListener() {
@@ -88,29 +89,28 @@ public class MainActivity extends AppCompatActivity {
                     popupWindow.showAtLocation(v,Gravity.END,40,-725);
                     menubtn.setImageDrawable(crossfade1);
                     crossfade1.startTransition(500);
-                    popupView.startAnimation(popupAnimationOpen);
                     clicked = true;
                 }
                 else {
-                    popupView.startAnimation(popupAnimationClose);
-                    popupView.getAnimation().setAnimationListener(new Animation.AnimationListener() {
-                        @Override
-                        public void onAnimationStart(Animation animation) {
-                        }
-
-                        @Override
-                        public void onAnimationEnd(Animation animation) {
-                            popupWindow.dismiss();
-                        }
-
-                        @Override
-                        public void onAnimationRepeat(Animation animation) {
-                        }
-                    });
+                    popupWindow.dismiss();
                     menubtn.setImageDrawable(crossfade2);
                     crossfade2.startTransition(500);
                     clicked = false;
                 }
+            }
+        });
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                popupWindow.dismiss();
+                menubtn.setImageDrawable(crossfade2);
+                crossfade2.startTransition(500);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        clicked = false;
+                    }
+                },300);
             }
         });
     }

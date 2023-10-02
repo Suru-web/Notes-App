@@ -8,4 +8,8 @@
         <item name="android:fontFamily">@font/balsamiq_sans</item>
         <item name="android:textSize">17sp</item>
     </style>
+    <style name="rightTopPopup">
+        <item name="android:windowEnterAnimation">@anim/right_top_open</item>
+        <item name="android:windowExitAnimation">@anim/right_top_close</item>
+    </style>
 </resources>
