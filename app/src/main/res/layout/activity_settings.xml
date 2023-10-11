@@ -67,14 +67,15 @@
         <LinearLayout
             android:layout_below="@+id/textAppAppearance"
             android:layout_width="match_parent"
-            android:padding="20dp"
             android:background="@drawable/all_side_round"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/changeGridLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="20dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -100,23 +101,25 @@
 
             <LinearLayout
                 android:id="@+id/imageTextLL"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="20dp"
+                android:animateLayoutChanges="true"
                 android:orientation="horizontal">
 
                 <!-- First Pair: ImageButton and TextView -->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
                     android:orientation="vertical">
 
                     <ImageButton
                         android:id="@+id/oneColBtn"
                         android:layout_width="110dp"
                         android:layout_height="200dp"
-                        android:src="@drawable/onecol"
+                        android:src="@drawable/onexone"
                         android:padding="10dp"
                         android:background="@drawable/all_side_round"
                         android:scaleType="centerCrop"/>
@@ -135,13 +138,14 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
                     android:orientation="vertical">
 
                     <ImageButton
                         android:id="@+id/twoColBtn"
                         android:layout_width="110dp"
                         android:layout_height="200dp"
-                        android:src="@drawable/twocol"
+                        android:src="@drawable/twoxtwo"
                         android:padding="10dp"
                         android:background="@drawable/all_side_round"
                         android:scaleType="centerCrop"/>
@@ -165,7 +169,7 @@
                         android:id="@+id/threeColBtn"
                         android:layout_width="110dp"
                         android:layout_height="200dp"
-                        android:src="@drawable/threecol"
+                        android:src="@drawable/threexthree"
                         android:padding="10dp"
                         android:background="@drawable/all_side_round"
                         android:scaleType="centerCrop"/>
